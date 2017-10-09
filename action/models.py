@@ -8,22 +8,19 @@ db = SQLAlchemy()
 migrate = Migrate()
 
 
-# 1. Entities
-
-class Cell(db.Model):
+class Cinema(db.Model):
     """The Cell table.
     """
-    __tablename__ = 'cell'
+    __tablename__ = 'cinema'
 
-    cell_id = db.Column(db.BigInteger, autoincrement=True, primary_key=True)
-    region = db.Column(db.String, nullable=False)
-    cell_name = db.Column(db.String, nullable=False)
+    id = db.Column(db.BigInteger, autoincrement=True, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    type = db.Column(db.String, nullable=False)
+    website = db.Column(db.String)
+    description = db.Column(db.String)
+    phone = db.Column(db.String)
     geometry = db.Column(ga.Geography('POLYGON', srid=4326,
                                       spatial_index=False))
-
-    def __init__(self, region='test', cell_name=None):
-        self.region = region
-        self.cell_name = cell_name if cell_name is not None else 'test-cell'
 
 
 # Utility functions.
@@ -40,6 +37,6 @@ def create_geo_index(column):
 
 # Create geometry indexes:
 geo_indexes = []
-for table_class in [Cell]:
+for table_class in [Cinema]:
     column = table_class.__table__.c['geometry']
     geo_indexes.append(create_geo_index(column))
