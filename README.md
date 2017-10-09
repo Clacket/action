@@ -1,2 +1,2 @@
-# action
-Web app for Clacket.
+# Action
+The web app for Clacket.

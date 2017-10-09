@@ -1,0 +1,32 @@
+sudo: required
+
+language: python
+
+python:
+  - "3.6"
+
+services:
+  - docker
+  - postgresql
+
+addons:
+  postgresql: "9.6"
+
+install:
+  - sudo apt-get install gdal-bin libgdal-dev libspatialindex-c3
+  - sudo apt-get install -y postgresql-9.6-postgis-2.3
+  - sudo service postgresql restart
+  - make bootstrap
+
+before_script:
+  - psql -U postgres -c 'create extension postgis;' travis
+
+script:
+  - make test
+
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: sh $TRAVIS_BUILD_DIR/scripts/deploy.sh
+  on:
+    branch: master

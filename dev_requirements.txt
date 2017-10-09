@@ -1,0 +1,6 @@
+flake8~=3.4.1
+pytest~=3.2.2
+pytest-flask~=0.10.0
+Sphinx~=1.6.3
+sphinx-autobuild~=0.7.1
+sphinxcontrib-sadisplay~=0.3.2.dev20130518
