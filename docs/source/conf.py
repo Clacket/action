@@ -55,7 +55,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'action'
+project = 'clacket:action'
 copyright = '2017, Clacket'
 author = 'Clacket'
 
