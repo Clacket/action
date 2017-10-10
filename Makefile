@@ -31,8 +31,5 @@ image-build:
 	make clean
 	@bash scripts/container_build.sh
 
-run-gunicorn:
-	@gunicorn action:app
-
 run:
-	@flask run
+	@gunicorn -b 0.0.0.0:8000 action:app
