@@ -4,4 +4,8 @@ ADD . /
 
 RUN make minimal
 
-CMD ["flask", "db", "upgrade"]
+RUN flask db upgrade
+
+RUN make run
+
+EXPOSE 8000
