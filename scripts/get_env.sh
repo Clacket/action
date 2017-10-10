@@ -1,5 +1,5 @@
 #! /bin/sh
 
 set -a
-source ./.env
+source ./.saved_env
 set +a
