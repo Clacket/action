@@ -1,9 +1,7 @@
 #! /bin/sh
 
-echo "Getting env vars from .env..."
-
 set -a
 . ./.env
 set +a
 
-echo "Done!"
+echo "Sanity check: FLASK_APP=$FLASK_APP"

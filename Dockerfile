@@ -6,7 +6,7 @@ RUN make minimal
 
 RUN ls -a
 
-RUN sh scripts/get_env.sh && flask db upgrade
+RUN . scripts/get_env.sh && flask db upgrade
 
 RUN make run
 
