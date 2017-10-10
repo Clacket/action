@@ -26,7 +26,8 @@ script:
 
 deploy:
   skip_cleanup: true
-  provider: script
-  script: sh $TRAVIS_BUILD_DIR/scripts/deploy.sh
-  on:
-    branch: master
+  provider: elasticbeanstalk
+  region: "eu-central-1"
+  app: "clacket"
+  env: "clacket-env"
+  bucket_name: "clacket"
