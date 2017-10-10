@@ -8,6 +8,6 @@ RUN ls -a
 
 RUN . scripts/get_env.sh && flask db upgrade
 
-EXPOSE 8000
+EXPOSE 5000
 
 ENTRYPOINT ["make", "-B", "run"]
