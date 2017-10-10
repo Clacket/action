@@ -5,3 +5,5 @@ gunicorn~=19.7.1
 geoalchemy2~=0.4.0
 psycopg2~=2.7.3
 python-dotenv~=0.7.1
+flask-wtf~=0.14.2
+flask-mail~=0.9.1
