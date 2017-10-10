@@ -7,3 +7,4 @@ SECRET_KEY="$SECRET_KEY"
 EOF
 
 echo "Saved env vars in $1"
+ls
