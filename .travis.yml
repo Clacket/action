@@ -24,6 +24,9 @@ before_script:
 script:
   - make test
 
+before_deploy:
+  - sh $TRAVIS_BUILD_DIR/scripts/set_env.sh $TRAVIS_BUILD_DIR/.env
+
 deploy:
   skip_cleanup: true
   provider: elasticbeanstalk
