@@ -4,8 +4,6 @@ ADD . /
 
 RUN make minimal
 
-RUN ls -a
-
 RUN . scripts/get_env.sh && flask db upgrade
 
 EXPOSE 8000

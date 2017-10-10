@@ -29,6 +29,7 @@ docs-run:
 
 image-build:
 	make clean
+	. scripts/get_env.sh
 	@bash scripts/container_build.sh
 
 run:

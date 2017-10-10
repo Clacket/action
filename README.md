@@ -25,3 +25,6 @@ The web app for Clacket.
 - Build & run the documentation locally: `$ make docs-run`
 - Build Docker image: `$ make image-build`
 - Test: `$ make test`
+
+## Deployment
+On merge to `master`, TravisCI runs tests, and if they're successful, it deploys the app with the required env vars to Elastic Beanstalk.
