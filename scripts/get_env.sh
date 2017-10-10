@@ -3,7 +3,7 @@
 echo "Getting env vars from .env..."
 
 set -a
-source ./.env
+. ./.env
 set +a
 
 echo "Done!"
