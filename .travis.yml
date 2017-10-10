@@ -31,3 +31,5 @@ deploy:
   app: "clacket"
   env: "clacket-env"
   bucket_name: "clacket"
+  on:
+    branch: master
