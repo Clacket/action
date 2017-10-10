@@ -4,4 +4,4 @@ ADD . /
 
 RUN make minimal
 
-flask db upgrade
+CMD ["flask", "db", "upgrade"]
