@@ -25,7 +25,9 @@ script:
   - make test
 
 before_deploy:
-  - sh $TRAVIS_BUILD_DIR/scripts/set_env.sh $TRAVIS_BUILD_DIR/.saved_env
+  - sh $TRAVIS_BUILD_DIR/scripts/set_env.sh $TRAVIS_BUILD_DIR/.env
+  - git add -f $TRAVIS_BUILD_DIR/.env
+  - git status
 
 deploy:
   skip_cleanup: true
