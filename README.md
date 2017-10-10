@@ -1,5 +1,5 @@
 # Action
-[![Build Status](https://travis-ci.org/Clacket/action.svg?branch=master)](https://travis-ci.org/Clacket/action) [![Documentation Status](https://readthedocs.org/projects/action/badge/?version=latest)](http://action.readthedocs.io/en/latest/?badge=latest)
+[![Build Status](https://travis-ci.org/Clacket/action.svg?branch=master)](https://travis-ci.org/Clacket/action) [![Documentation Status](https://readthedocs.org/projects/action/badge/)](http://action.readthedocs.io/en/latest/?badge=latest)
 
 
 The web app for Clacket.
