@@ -9,3 +9,4 @@ SQLALCHEMY_TRACK_MODIFICATIONS = os.environ.get(
     'SQLALCHEMY_TRACK_MODIFICATIONS', False)
 DEBUG = os.environ.get('DEBUG', False)
 SECRET_KEY = os.environ.get('SECRET_KEY')
+SERVER_NAME = os.environ.get('SERVER_NAME')
