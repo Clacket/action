@@ -16,7 +16,7 @@ The web app for Clacket.
 	```
 3. Copy the .env file and fill it.
 	```bash
-	$ cp .env.example
+	$ cp .env.example .env
 	```
 
 ## Commands
