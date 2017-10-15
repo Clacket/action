@@ -5,6 +5,9 @@ from dotenv import load_dotenv
 load_dotenv(os.path.join(os.path.dirname(__file__), '../../.env'))
 
 SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL')
+SQLALCHEMY_BINDS = {
+    'admin': os.environ.get('TEST_ADMIN_DATABASE_URL')
+}
 SQLALCHEMY_TRACK_MODIFICATIONS = os.environ.get(
     'SQLALCHEMY_TRACK_MODIFICATIONS', False)
 DEBUG = os.environ.get('DEBUG', True)

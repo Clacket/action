@@ -52,6 +52,15 @@ class MovieShowing(db.Model):
     time_to = db.Column(db.DateTime)
 
 
+class Admin(db.Model):
+    """Table of admins."""
+
+    __tablename__ = 'admin'
+    __bind_key__ = 'admin'
+
+    id = db.Column(db.BigInteger, autoincrement=True, primary_key=True)
+
+
 # Utility functions.
 
 def create_geo_index(column):
