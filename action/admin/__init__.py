@@ -29,7 +29,7 @@ def login():
                 request.form['token'])
             return redirect_back('admin.index')
         except LoginException as e:
-            error = e.message
+            error = str(e)
     return render_template('admin_login.html', error=error)
 
 
@@ -59,7 +59,7 @@ def register(invite_id):
                 login_admin(username, password)
                 return render_template('admin_2fa.html')
             except (DBException, LoginException) as e:
-                error = e.message
+                error = str(e)
         return render_template(
             'admin_register.html', email=invite.email,
             invite_id=invite_id, error=error)
