@@ -13,3 +13,4 @@ SQLALCHEMY_TRACK_MODIFICATIONS = os.environ.get(
 DEBUG = os.environ.get('DEBUG', False)
 SECRET_KEY = os.environ.get('SECRET_KEY')
 SERVER_NAME = os.environ.get('SERVER_NAME')
+PREFERRED_URL_SCHEME = 'https'
