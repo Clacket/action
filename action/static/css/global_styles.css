@@ -1,0 +1,40 @@
+.col-centered {
+    float: none;
+    margin: 0 auto;
+}
+
+svg {
+	overflow: visible;
+}
+
+.logo-small svg {
+	width: 80px;
+	height: 80px;
+}
+
+
+@media (min-width: 768px) {
+	.push-down {
+		margin-top: 5em;
+	}
+}
+
+form .form-control {
+	margin-top: 0.8em;
+	margin-bottom: 0.8em;
+}
+
+.btn {
+	cursor: pointer;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+.btn:hover {
+	filter: invert(100%);
+}
+
+.btn-submit {
+	width: 100%;
+	background-color: #e67e22;
+}

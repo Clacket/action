@@ -33,4 +33,5 @@ image-build:
 	@bash scripts/container_build.sh
 
 run:
-	@gunicorn -b 0.0.0.0:8000 action:app
+	make clean
+	@gunicorn -b 0.0.0.0:8000 -w 6 action:app

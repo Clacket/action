@@ -1,0 +1,19 @@
+{% extends 'admin_layout.html' %}
+{% block content %}
+<div class="row">
+	<div class="col-xs-12 col-md-4 col-centered text-center push-down">
+		<form action="{{ url_for('admin.login') }}" method="POST">
+			<div class="logo-small">
+				{% include 'logo.svg' %}
+			</div>
+			<h1>Admin Login</h1>
+			<div class="form-group">
+				<input type="text" class="form-control"  name="username" placeholder="Username">
+				<input type="password" name="password" class="form-control" placeholder="Password">
+				<input type="text" name="token" class="form-control" placeholder="Authenticator Token">
+				<input type="submit" value="Login" class="btn btn-submit">
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock %}

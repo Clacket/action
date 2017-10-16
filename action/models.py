@@ -78,10 +78,10 @@ class Admin(db.Model):
             password_text, method='pbkdf2:sha512:10000')
         self.otp_secret = base64.b32encode(os.urandom(10)).decode('utf-8')
 
-    def verify_password(self, text_password):
+    def isPassword(self, text_password):
         return check_password_hash(self.password, text_password)
 
-    def verify_totp(self, token):
+    def isToken(self, token):
         return onetimepass.valid_totp(token=token, secret=self.otp_secret)
 
     @property
