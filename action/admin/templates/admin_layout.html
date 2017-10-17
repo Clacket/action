@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>Clacket Admin {% block title %}{% endblock %}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link href="https://fonts.googleapis.com/css?family=Rajdhani:500,700" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Gochi+Hand" rel="stylesheet">
 	<link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
@@ -11,11 +12,13 @@
 </head>
 <body>
 	<div class="container-fluid">
-		{% if error is not none %}
-			<h1>{{ error }}</h1>
-		{% endif %}
 		{% block content %}
 		{% endblock %}
 	</div>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+	{% block scripts %}
+	{% endblock %}
 </body>
 </html>

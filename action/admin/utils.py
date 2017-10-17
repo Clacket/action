@@ -96,7 +96,7 @@ def login_admin_token(token, force=False):
     admin = Admin.query.filter_by(id=session.get('adminId')).first()
     if not force and not admin.two_factor:
         raise LoginException('Two-factor authentication has not been enabled.')
-    if not admin.isToken(token):
+    if not admin.isToken(str(token)):
         raise LoginException('Token is invalid.')
     session['admin_logged_in'] = True
     session['adminUsername'] = admin.username.lower()

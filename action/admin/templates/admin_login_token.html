@@ -1,4 +1,5 @@
 {% extends 'admin_layout.html' %}
+{% from 'global_macros.html' import alert %}
 {% block content %}
 <div class="row">
 	<div class="col-xs-12 col-md-4 col-centered text-center push-down">
@@ -7,6 +8,7 @@
 				{% include 'logo.svg' %}
 			</div>
 			<h1>Authenticator Token</h1>
+			{{ alert(error) }}
 			<div class="form-group">
 				<input type="text" name="token" class="form-control" placeholder="Authenticator Token">
 				<input type="submit" value="Login" class="btn btn-submit">

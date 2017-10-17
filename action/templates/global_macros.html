@@ -1,0 +1,10 @@
+{% macro alert(message, mode='dark', title='Error') %}
+{% if message is not none %}
+<div class="alert alert-{{ mode }} alert-dismissible fade show" role="alert">
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	    <span aria-hidden="true">&times;</span>
+	</button>
+  <b>{{ title }}: </b>{{ message }}
+</div>
+{% endif %}
+{% endmacro %}

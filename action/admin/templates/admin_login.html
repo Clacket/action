@@ -1,4 +1,5 @@
 {% extends 'admin_layout.html' %}
+{% from 'global_macros.html' import alert %}
 {% block content %}
 <div class="row">
 	<div class="col-xs-12 col-md-4 col-centered text-center push-down">
@@ -7,6 +8,7 @@
 				{% include 'logo.svg' %}
 			</div>
 			<h1>Admin Login</h1>
+			{{ alert(error) }}
 			<div class="form-group">
 				<input type="text" class="form-control"  name="username" placeholder="Username">
 				<input type="password" name="password" class="form-control" placeholder="Password">

@@ -38,3 +38,7 @@ form .form-control {
 	width: 100%;
 	background-color: #e67e22;
 }
+
+.close {
+	cursor: pointer !important;
+}

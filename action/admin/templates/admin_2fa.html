@@ -1,4 +1,5 @@
 {% extends 'admin_layout.html' %}
+{% from 'global_macros.html' import alert %}
 {% block content %}
 <div class="row">
 	<div class="col-xs-12 col-md-4 col-centered text-center push-down">
@@ -7,6 +8,7 @@
 				{% include 'logo.svg' %}
 			</div>
 			<h1>2-Factor Authentication</h1>
+			{{ alert(error) }}
 			<img class="qr-code" src="{{ url_for('admin.qrcode') }}">
 			<h4 class="friendly">Scan the QR Code using Google Authenticator or FreeOTP, and enter the resulting token below.</h4>
 			<input type="text" class="form-control" name="token" placeholder="Authenticator Token" required>

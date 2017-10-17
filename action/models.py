@@ -83,8 +83,9 @@ class Admin(db.Model):
         return check_password_hash(self.password, text_password)
 
     def isToken(self, token):
-        return onetimepass.valid_totp(
-            token=int(token.replace(' ', '')), secret=self.otp_secret)
+        stripped = [x for x in token if x.isdigit()]
+        return len(stripped) > 0 and onetimepass.valid_totp(
+            token=int(''.join(stripped)), secret=self.otp_secret)
 
     @property
     def totp_uri(self):
