@@ -8,3 +8,4 @@ python-dotenv~=0.7.1
 flask-wtf~=0.14.2
 flask-mail~=0.9.1
 onetimepass~=1.0.1
+pyqrcode~=1.2.1

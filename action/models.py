@@ -69,6 +69,7 @@ class Admin(db.Model):
     email = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
     otp_secret = db.Column(db.String(16), nullable=False)
+    two_factor = db.Column(db.Boolean, nullable=False, default=False)
 
     def __init__(self, **kwargs):
         self.username = self.check_unique('username', kwargs.get('username'))
@@ -82,7 +83,8 @@ class Admin(db.Model):
         return check_password_hash(self.password, text_password)
 
     def isToken(self, token):
-        return onetimepass.valid_totp(token=token, secret=self.otp_secret)
+        return onetimepass.valid_totp(
+            token=int(token.replace(' ', '')), secret=self.otp_secret)
 
     @property
     def totp_uri(self):
@@ -92,8 +94,8 @@ class Admin(db.Model):
     @classmethod
     def check_unique(cls, field, value):
         attribute = getattr(cls, field)
-        value = cls.check_not_none(value)
-        if cls.query(attribute == value).scalar() is not None:
+        value = cls.check_not_none(field, value)
+        if cls.query.filter(attribute == value).scalar() is not None:
             raise DBException(
                 'An admin already exists with {0} = {1}'.format(field, value))
         else:

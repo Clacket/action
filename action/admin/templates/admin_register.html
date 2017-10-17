@@ -2,10 +2,19 @@
 {% block content %}
 <div class="row">
 	<div class="col-xs-12 col-md-4 col-centered text-center push-down">
-		<h1>Admin Register</h1>
-		<h2>{{ email }}</h2>
-		<h2>{{ invite_id }}</h2>
-		<h2>{{ error }}</h2>
+		<form action="{{ url_for('admin.register', invite_id=invite_id) }}" method="POST">
+			<div class="logo-small">
+				{% include 'logo.svg' %}
+			</div>
+			<h1 class="friendly">Welcome <small><i class="em em-wave"></i></small></h1>
+			<div class="form-group">
+				<input type="text" class="form-control"  name="username" placeholder="Username">
+				<input type="email" class="form-control" value="{{ email }}" readonly>
+				<input type="password" name="password" class="form-control" placeholder="Password">
+				<input type="password" name="password_confirm" class="form-control" placeholder="Confirm Password">
+				<input type="submit" value="Next" class="btn btn-submit">
+			</div>
+		</form>
 	</div>
 </div>
 {% endblock %}

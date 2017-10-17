@@ -9,7 +9,10 @@ def authenticate(f):
     """
     @wraps(f)
     def decorated_function(*args, **kwargs):
+        if 'adminId' in session and not user_activated():
+            return redirect(url_for('admin.activate', next=request.url))
         if not is_logged_in() or not user_exists():
+            logout_admin()
             return redirect(url_for('admin.login', next=request.url))
         return f(*args, **kwargs)
     return decorated_function
@@ -22,7 +25,35 @@ def anonymous_only(f):
     def decorated_function(*args, **kwargs):
         if is_logged_in():
             return redirect(url_for('admin.index'))
+        elif 'adminId' in session:
+            return redirect(url_for('admin.activate'))
         return f(*args, **kwargs)
+    return decorated_function
+
+
+def unactivated_only(f):
+    """Decorator function to ensure user is an admin but not yet activated."""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'adminId' in session and \
+                Admin.query.filter_by(
+                    id=session['adminId'],
+                    two_factor=False).first() is not None:
+            return f(*args, **kwargs)
+        return redirect(url_for('admin.index'))
+    return decorated_function
+
+
+def activated_only(f):
+    """Decorator function to ensure user is an admin and activated."""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'adminId' in session and \
+                Admin.query.filter_by(
+                    id=session['adminId'],
+                    two_factor=True).first() is not None:
+            return f(*args, **kwargs)
+        return redirect(url_for('admin.activate'))
     return decorated_function
 
 
@@ -34,31 +65,41 @@ def is_logged_in():
 
 def user_exists():
     """Given user is logged in, do they exist in db?"""
-    return Admin.query.filter_by(id=session['adminId']).first() is not None
+    return 'adminId' in session and Admin.query.filter_by(
+        id=session['adminId']).first() is not None
 
 
-def login_admin(username, password, token=None):
+def user_activated():
+    """Has the user activated 2fa?"""
+    return Admin.query.filter_by(
+        id=session['adminId'], two_factor=True).first() is not None
+
+
+def login_admin(username, password):
     """Function to login admin with their username
     Sets:
-        - session['admin_logged_in'] to True.
-        - session['adminUsername'] to the username.
         - session['adminId'] to the user ID.
     Raises LoginException (represented as e here) if:
         - User with that username does not exist.
         - Password is incorrect.
-        - Token is invalid.
     """
     admin = Admin.query.filter_by(username=username.lower()).first()
     if admin is not None:
         if not admin.isPassword(password):
             raise LoginException('Password is incorrect.')
-        if token is not None and not admin.isToken(token):
-            raise LoginException('Token is invalid.')
-        session['admin_logged_in'] = True
-        session['adminUsername'] = username.lower()
         session['adminId'] = admin.id
     else:
         raise LoginException('Username does not exist.')
+
+
+def login_admin_token(token, force=False):
+    admin = Admin.query.filter_by(id=session.get('adminId')).first()
+    if not force and not admin.two_factor:
+        raise LoginException('Two-factor authentication has not been enabled.')
+    if not admin.isToken(token):
+        raise LoginException('Token is invalid.')
+    session['admin_logged_in'] = True
+    session['adminUsername'] = admin.username.lower()
 
 
 def logout_admin():
