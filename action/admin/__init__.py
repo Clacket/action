@@ -78,6 +78,8 @@ def register(invite_id):
                 return redirect(url_for('admin.activate'))
             except (DBException, LoginException) as e:
                 error = str(e)
+        else:
+            error = 'This invite is invalid or no longer available.'
         return render_template(
             'admin_register.html', email=invite.email,
             invite_id=invite_id, error=error)
