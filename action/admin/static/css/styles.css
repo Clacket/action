@@ -2,13 +2,15 @@ body {
 	background-color: #0e0e0e;
 	color: #ecf0f1;
 	font-family: 'Rajdhani';
-	padding-bottom: 2em;
 }
 
-h1 {
-	color: #ecf0f1;
+h1, h2, h3, h4 {
 	text-transform: uppercase;
 	letter-spacing: 0.15em;
+}
+
+h1 small, h2 small, h3 small, h4 small {
+	opacity: 0.5;
 }
 
 .friendly {
@@ -17,6 +19,68 @@ h1 {
 	letter-spacing: 0;
 }
 
+.friendly small {
+	opacity: 1;
+}
+
 .qr-code {
 	margin-bottom: 0.5em;
+}
+
+.top-bar{
+	margin-left: -1em;
+	margin-right: -1em;
+	min-height: 2em;
+	padding-left: 2em;
+	padding-right: 2em;
+	padding-top: 1em;
+	-webkit-flex-direction: row;
+   	flex-direction: row;
+   	color: #0e0e0e;
+	background: #FF512F;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #F09819, #FF512F);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #F09819, #FF512F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.top-bar div:not('.dropdown-menu') {
+	display: inline-block;
+}
+
+.top-bar .name {
+	margin-top: 0.3em;
+    margin-left: -0.5em;
+}
+
+.top-bar .username {
+	margin-top: 0.5em;
+}
+
+.top-bar .settings {
+	margin-top: 0.1em;
+}
+
+.side-bar {
+	-webkit-flex-direction: column;
+	flex-direction: column;
+	padding-left: 0px;
+	padding-right: 0px;
+	min-height: calc(100vh - 4.7em);
+	background: #232526;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to bottom, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to bottom, #0e0e0e, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+
+.side-bar .btn {
+	text-align: right;
+	color: #F09819;
+	margin-bottom: 1em;
+}
+
+.side-bar .btn.selected, .side-bar .btn:hover {
+	border-bottom: 2px solid #F09819;
+}
+
+.content-bar .content {
+	display: none;
 }

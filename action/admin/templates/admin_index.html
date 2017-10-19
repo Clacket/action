@@ -1,8 +1,43 @@
 {% extends 'admin_layout.html' %}
 {% block content %}
-<div class="row">
-	<div class="col-xs-12 col-md-3 col-centered">
-		<h1>Hi Admin</h1>
+<div class="top-bar flex-container">
+	<div class="logo-tiny logo-black">
+		{% include 'logo.svg' %}
+	</div>
+	<div class="name"><h4>Clacket <small>Admin Portal</small></h4></div>
+	<div class="dropdown settings float-right">
+		<button type="button" id="dropdownBtn" class="btn btn-transparent dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			{{ session['adminUsername'] }}
+		</button>
+		<div class="dropdown-menu" aria-labelledby="dropdownBtn">
+		    <a class="dropdown-item" href="{{ url_for('admin.logout') }}">Logout</a>
+		</div>
 	</div>
 </div>
+<div class="row">
+	<div class="side-bar flex-container col-xs-4 col-md-2 text-right">
+		<button class="btn btn-transparent" data-select="movie-div">Movies</button>
+		<button class="btn btn-transparent" data-select="cinema-div">Cinemas</button>
+		<button class="btn btn-transparent" data-select="user-div">Users</button>
+		<button class="btn btn-transparent" data-select="analytics-div">Analytics</button>
+	</div>
+	<div class="col-xs-8 col-md-10 content-bar">
+		<div id="movie-div" class="content">
+			<h3>Control movies here</h3>
+		</div>
+		<div id="cinema-div" class="content">
+			<h3>Control cinemas here</h3>
+		</div>
+		<div id="user-div" class="content">
+			<h3>Control users here</h3>
+		</div>
+		<div id="analytics-div" class="content">
+			<h3>See analytics here</h3>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('admin.static', filename='js/sidebar.js') }}"></script>
 {% endblock %}

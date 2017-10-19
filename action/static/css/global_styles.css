@@ -1,3 +1,12 @@
+body {
+	overflow-x: hidden;
+}
+
+.btn:focus, .btn:active {
+ 	box-shadow: none;
+}
+
+
 .col-centered {
     float: none;
     margin: 0 auto;
@@ -10,6 +19,17 @@ svg {
 .logo-small svg {
 	width: 80px;
 	height: 80px;
+}
+
+.logo-tiny svg {
+	width: 50px;
+	height: 50px;
+}
+
+.logo-black svg g path{
+	fill: #0e0e0e;
+	stroke: #0e0e0e;
+
 }
 
 
@@ -39,6 +59,20 @@ form .form-control {
 	background-color: #e67e22;
 }
 
+.btn-transparent {
+	background-color: transparent;
+}
+
 .close {
 	cursor: pointer !important;
 }
+
+.flex-container {
+   display: -webkit-flex;
+   display: flex;
+}
+
+.flex-container .float-right {
+	margin-left: auto;
+}
+

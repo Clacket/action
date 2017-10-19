@@ -120,7 +120,7 @@ class AdminInvite(db.Model):
     id = db.Column(db.String(36), primary_key=True)
     created = db.Column(
         db.DateTime, nullable=False, default=datetime.datetime.utcnow)
-    email = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, unique=True, nullable=False)
     claimed = db.Column(db.DateTime)
 
 
