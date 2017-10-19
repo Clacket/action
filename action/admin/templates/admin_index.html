@@ -1,10 +1,10 @@
 {% extends 'admin_layout.html' %}
 {% block content %}
-<div class="top-bar flex-container">
+<div class="top-bar flex-container flex-row">
 	<div class="logo-tiny logo-black">
 		{% include 'logo.svg' %}
 	</div>
-	<div class="name"><h4>Clacket <small>Admin Portal</small></h4></div>
+	<div class="name clickable" data-href="{{ url_for('admin.index') }}"><h4>Clacket <small>Admin Portal</small></h4></div>
 	<div class="dropdown settings float-right">
 		<button type="button" id="dropdownBtn" class="btn btn-transparent dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			{{ session['adminUsername'] }}
@@ -15,15 +15,24 @@
 	</div>
 </div>
 <div class="row">
-	<div class="side-bar flex-container col-xs-4 col-md-2 text-right">
+	<div class="side-bar flex-container flex-col col-xs-4 col-md-2 text-right">
 		<button class="btn btn-transparent" data-select="movie-div">Movies</button>
 		<button class="btn btn-transparent" data-select="cinema-div">Cinemas</button>
 		<button class="btn btn-transparent" data-select="user-div">Users</button>
 		<button class="btn btn-transparent" data-select="analytics-div">Analytics</button>
+		<button class="btn btn-transparent" data-select="complaints-div">Complaints</button>
 	</div>
 	<div class="col-xs-8 col-md-10 content-bar">
 		<div id="movie-div" class="content">
-			<h3>Control movies here</h3>
+			<div class="flex-container flex-row">
+				<button class="btn btn-blue">
+					<small><i class="fa fa-plus"></i></small> New Movie
+				</button>
+			</div>
+			<div>
+				<h3>Recently Modified</h3>
+				<div id="movie-grid" data-href="{{ url_for('admin.recent_movies', limit=10) }}"></div>
+			</div>
 		</div>
 		<div id="cinema-div" class="content">
 			<h3>Control cinemas here</h3>
@@ -33,6 +42,9 @@
 		</div>
 		<div id="analytics-div" class="content">
 			<h3>See analytics here</h3>
+		</div>
+		<div id="complaints-div" class="content">
+			<h3>See and respond to complaints here</h3>
 		</div>
 	</div>
 </div>

@@ -40,6 +40,10 @@ class Movie(db.Model):
     id = db.Column(db.BigInteger, autoincrement=True, primary_key=True)
     title = db.Column(db.String, nullable=False)
     year = db.Column(db.Integer, nullable=False)
+    created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    last_modified = db.Column(
+        db.DateTime, default=datetime.datetime.utcnow,
+        onupdate=datetime.datetime.utcnow)
     showings = db.relationship(
         'Showing', secondary='movie_showing',
         back_populates='movies', lazy='dynamic')

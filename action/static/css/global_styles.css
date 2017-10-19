@@ -33,6 +33,10 @@ svg {
 }
 
 
+.clickable {
+	cursor: pointer;
+}
+
 @media (min-width: 768px) {
 	.push-down {
 		margin-top: 5em;
@@ -48,6 +52,7 @@ form .form-control {
 	cursor: pointer;
 	text-transform: uppercase;
 	font-weight: bold;
+	border-radius: 0.2em;
 }
 
 .btn:hover {
@@ -57,6 +62,10 @@ form .form-control {
 .btn-submit {
 	width: 100%;
 	background-color: #e67e22;
+}
+
+.btn-blue {
+	background-color: #3BD1B2;
 }
 
 .btn-transparent {
@@ -72,7 +81,16 @@ form .form-control {
    display: flex;
 }
 
+.flex-container.flex-row {
+	-webkit-flex-direction: row;
+   	flex-direction: row;
+}
+
+.flex-container.flex-col {
+	-webkit-flex-direction: column;
+	flex-direction: column;
+}
+
 .flex-container .float-right {
 	margin-left: auto;
 }
-

@@ -34,8 +34,6 @@ h1 small, h2 small, h3 small, h4 small {
 	padding-left: 2em;
 	padding-right: 2em;
 	padding-top: 1em;
-	-webkit-flex-direction: row;
-   	flex-direction: row;
    	color: #0e0e0e;
 	background: #FF512F;  /* fallback for old browsers */
 	background: -webkit-linear-gradient(to right, #F09819, #FF512F);  /* Chrome 10-25, Safari 5.1-6 */
@@ -60,8 +58,6 @@ h1 small, h2 small, h3 small, h4 small {
 }
 
 .side-bar {
-	-webkit-flex-direction: column;
-	flex-direction: column;
 	padding-left: 0px;
 	padding-right: 0px;
 	min-height: calc(100vh - 4.7em);
@@ -81,6 +77,15 @@ h1 small, h2 small, h3 small, h4 small {
 	border-bottom: 2px solid #F09819;
 }
 
-.content-bar .content {
+.content-bar {
+	padding: 1em;
+	padding-left: 2em;
+}
+
+.content-bar .content:not(.visible) {
 	display: none;
+}
+
+.content-bar .content div {
+	margin-bottom: 1em;
 }

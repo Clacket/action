@@ -2,13 +2,13 @@ from io import BytesIO
 import datetime
 import pyqrcode
 from flask import (
-    Blueprint, render_template, request, redirect, url_for, session)
+    Blueprint, render_template, request, redirect, url_for, session, jsonify)
 from action.admin.utils import (
     authenticate, anonymous_only,
     activated_only, unactivated_only,
     login_admin, LoginException, logout_admin, login_admin_token)
 from action.utils import redirect_back
-from action.models import Admin, AdminInvite, DBException, db
+from action.models import Admin, AdminInvite, Movie, DBException, db
 
 
 admin = Blueprint(
@@ -124,3 +124,11 @@ def qrcode():
 def logout():
     logout_admin()
     return redirect_back('admin.index')
+
+
+@admin.route('/movies/recent/<int:limit>')
+@authenticate
+def recent_movies(limit):
+    query = Movie.query.order_by(Movie.last_modified.desc()).limit(limit)
+    movies = [x.__dict__ for x in query.all()]
+    return jsonify(dict(movies=movies))
