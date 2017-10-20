@@ -136,14 +136,39 @@ def recent_movies(limit):
     return render_template('admin_movie_cards.html', movies=movies)
 
 
-@admin.route('/movies/new', methods=['POST'])
+@admin.route('/movie/new', methods=['POST'])
 @authenticate
 def add_movie():
-    title = request.form.get('title')
-    year = int(request.form.get('year'))
-    description = request.form.get('description')
-    movie = Movie(title=title, year=year, description=description)
+    kwargs = Movie.get_kwargs(request)
+    movie = Movie(**kwargs)
     db.session.add(movie)
     db.session.commit()
-    flash('Movie {0} added!'.format(title))
+    flash('Movie {0} added!'.format(kwargs.get('title')))
+    return redirect(url_for('admin.index'))
+
+
+@admin.route('/movie/<int:movie_id>/edit', methods=['POST'])
+@authenticate
+def edit_movie(movie_id):
+    kwargs = Movie.get_kwargs(request)
+    movie = Movie.query.filter_by(id=movie_id).first()
+    if movie is None:
+        return 'Movie not found.', 404
+    for kwarg, value in kwargs.items():
+        setattr(movie, kwarg, value)
+    db.session.commit()
+    flash('Movie {0} edited!'.format(kwargs.get('title')))
+    return redirect(url_for('admin.index'))
+
+
+@admin.route('/movie/<int:movie_id>/delete', methods=['POST'])
+@authenticate
+def delete_movie(movie_id):
+    movie = Movie.query.filter_by(id=movie_id).first()
+    title = movie.title
+    if movie is None:
+        return 'Movie not found', 404
+    db.session.delete(movie)
+    db.session.commit()
+    flash('Movie {0} deleted!'.format(title))
     return redirect(url_for('admin.index'))

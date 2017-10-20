@@ -57,9 +57,17 @@ class Movie(db.Model):
     @property
     def serialize(self):
         return dict(
+            id=self.id,
             title=self.title,
             year=self.year,
             description=self.description)
+
+    @classmethod
+    def get_kwargs(cls, request):
+        return dict(
+            title=request.form.get('title'),
+            year=request.form.get('year'),
+            description=request.form.get('description'))
 
 
 class MovieShowing(db.Model):

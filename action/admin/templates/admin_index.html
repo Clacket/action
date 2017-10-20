@@ -1,5 +1,6 @@
 {% extends 'admin_layout.html' %}
 {% from 'global_macros.html' import modal %}
+{% from 'admin_macros.html' import movie_form %}
 {% block content %}
 <div class="top-bar flex-container flex-row">
 	<div class="logo-tiny logo-black">
@@ -30,18 +31,9 @@
 					<small><i class="fa fa-plus"></i></small> New Movie
 				</button>
 				{% call modal('addMovie', 'New Movie') %}
-					<form action="{{ url_for('admin.add_movie') }}" method="POST">
-						<div class="form-group">
-							<input type="text" class="form-control" name="title" placeholder="Title" required>
-						</div>
-						<div class="form-group">
-							<input type="number" class="form-control" name="year" placeholder="Year of Release" min="1900" required>
-						</div>
-						<div class="form-group">
-							<textarea name="description" class="form-control" placeholder="Description"></textarea>
-						</div>
-						<input type="submit" class="btn btn-submit" value="Submit">
-					</form>
+					{% with endpoint = url_for('admin.add_movie') %}
+						{{ movie_form(endpoint) }}
+					{% endwith %}
 				{% endcall %}
 			</div>
 			<div>

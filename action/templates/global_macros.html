@@ -9,8 +9,8 @@
 {% endif %}
 {% endmacro %}
 
-{% macro modal(id, title, defaultFooter=False, cancel='Cancel', small=False, isFlash=False) %}
-<div class="modal fade" id="{{ id }}" tabindex="-1" role="dialog" aria-labelledby="{{ id }}Label">
+{% macro modal(id, title, defaultFooter=False, cancel='Cancel', small=False, isFlash=False, attached_id='') %}
+<div class="modal fade" id="{{ id }}{{attached_id}}" tabindex="-1" role="dialog" aria-labelledby="{{ id }}Label">
   <div class="modal-dialog {% if small %} modal-sm {% endif %}" role="document">
     <div class="modal-content">
       <div class="modal-header {% if isFlash %} flash-modal-header {% endif %}">

@@ -1,0 +1,14 @@
+{% macro movie_form(endpoint, movie=None) %}
+<form action="{{ endpoint }}" method="POST">
+	<div class="form-group">
+		<input type="text" class="form-control" name="title" placeholder="Title" {% if movie is not none %} value="{{ movie.title }}" {% endif %} required>
+	</div>
+	<div class="form-group">
+		<input type="number" class="form-control" name="year" placeholder="Year of Release" min="1900" {% if movie is not none %} value="{{ movie.year }}" {% endif %} required>
+	</div>
+	<div class="form-group">
+		<textarea name="description" class="form-control" placeholder="Description">{% if movie is not none %} {{ movie.description }} {% endif %}</textarea>
+	</div>
+	<input type="submit" class="btn btn-submit" value="Submit">
+</form>
+{% endmacro %}

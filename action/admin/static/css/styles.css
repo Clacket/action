@@ -6,6 +6,11 @@ body {
 
 .modal-content {
 	background-color: #0e0e0e;
+	color: #ecf0f1;
+}
+
+.modal-content h1, .modal-content h2, .modal-content h3, .modal-content h4, .modal-content h5 {
+	color: #ecf0f1;
 }
 
 .modal-header, .modal-footer {
