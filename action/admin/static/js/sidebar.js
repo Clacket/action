@@ -27,7 +27,7 @@ $(function () {
 		url: recent_movies.data('href'),
 		method: 'GET',
 		success: function (data) {
-			console.log(data);
+			recent_movies.html(data);
 		}
 	});
 });

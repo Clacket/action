@@ -94,3 +94,7 @@ form .form-control {
 .flex-container .float-right {
 	margin-left: auto;
 }
+
+.card {
+	margin: 1em;
+}

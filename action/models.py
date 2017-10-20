@@ -40,6 +40,7 @@ class Movie(db.Model):
     id = db.Column(db.BigInteger, autoincrement=True, primary_key=True)
     title = db.Column(db.String, nullable=False)
     year = db.Column(db.Integer, nullable=False)
+    description = db.Column(db.String)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     last_modified = db.Column(
         db.DateTime, default=datetime.datetime.utcnow,
@@ -47,6 +48,18 @@ class Movie(db.Model):
     showings = db.relationship(
         'Showing', secondary='movie_showing',
         back_populates='movies', lazy='dynamic')
+
+    def __init__(self, **kwargs):
+        self.title = kwargs.get('title')
+        self.year = kwargs.get('year')
+        self.description = kwargs.get('description')
+
+    @property
+    def serialize(self):
+        return dict(
+            title=self.title,
+            year=self.year,
+            description=self.description)
 
 
 class MovieShowing(db.Model):

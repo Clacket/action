@@ -4,6 +4,26 @@ body {
 	font-family: 'Rajdhani';
 }
 
+.modal-content {
+	background-color: #0e0e0e;
+}
+
+.modal-header, .modal-footer {
+	border: none;
+}
+
+.flash-modal-header {
+	background: #FF512F;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #F09819, #FF512F);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #F09819, #FF512F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.modal-body .form-control {
+	background-color: rgba(255,255,255,0.15);
+    color: #F09819;
+    font-weight: bold;
+}
+
 h1, h2, h3, h4 {
 	text-transform: uppercase;
 	letter-spacing: 0.15em;
@@ -88,4 +108,9 @@ h1 small, h2 small, h3 small, h4 small {
 
 .content-bar .content div {
 	margin-bottom: 1em;
+}
+
+.movie-card {
+	color: #0e0e0e;
+	background-color: rgba(255, 255, 255, 0.85);
 }

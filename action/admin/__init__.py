@@ -1,8 +1,10 @@
 from io import BytesIO
 import datetime
 import pyqrcode
+from sqlalchemy import desc
 from flask import (
-    Blueprint, render_template, request, redirect, url_for, session, jsonify)
+    Blueprint, render_template, request, redirect, url_for,
+    session, flash)
 from action.admin.utils import (
     authenticate, anonymous_only,
     activated_only, unactivated_only,
@@ -129,6 +131,19 @@ def logout():
 @admin.route('/movies/recent/<int:limit>')
 @authenticate
 def recent_movies(limit):
-    query = Movie.query.order_by(Movie.last_modified.desc()).limit(limit)
-    movies = [x.__dict__ for x in query.all()]
-    return jsonify(dict(movies=movies))
+    movies = Movie.query.order_by(
+        desc(Movie.last_modified)).limit(limit).all()
+    return render_template('admin_movie_cards.html', movies=movies)
+
+
+@admin.route('/movies/new', methods=['POST'])
+@authenticate
+def add_movie():
+    title = request.form.get('title')
+    year = int(request.form.get('year'))
+    description = request.form.get('description')
+    movie = Movie(title=title, year=year, description=description)
+    db.session.add(movie)
+    db.session.commit()
+    flash('Movie {0} added!'.format(title))
+    return redirect(url_for('admin.index'))

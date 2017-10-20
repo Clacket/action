@@ -1,0 +1,14 @@
+{% from 'global_macros.html' import modal %}
+{% with messages = get_flashed_messages() %}
+	{% if messages %}
+			{% call modal('flash-message', 'Hey..', defaultFooter=True, cancel='Dismiss', small=True) %}
+				{% for message in messages %}
+					<h5>{{ message }}</h5>
+				{% endfor %}
+			{% endcall %}
+	{% endif %}
+{% endwith %}
+
+{% if get_flashed_messages() %}
+	<script>$(function(){ $('#flash-message').modal('show'); });</script>
+{% endif %}
