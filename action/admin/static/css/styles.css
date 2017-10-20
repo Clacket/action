@@ -4,6 +4,15 @@ body {
 	font-family: 'Rajdhani';
 }
 
+.movie-card .btn {
+	opacity: 0.5;
+	transition-duration: 0.3s;
+}
+
+.movie-card .btn:hover {
+	opacity: 1;
+}
+
 .modal-content {
 	background-color: #0e0e0e;
 	color: #ecf0f1;
