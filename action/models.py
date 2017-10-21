@@ -7,6 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from shapely.geometry import Point
 from shapely import wkb
+from uuid import uuid4
 
 import geoalchemy2 as ga
 import onetimepass
@@ -188,6 +189,10 @@ class AdminInvite(db.Model):
         db.DateTime, nullable=False, default=datetime.datetime.utcnow)
     email = db.Column(db.String, unique=True, nullable=False)
     claimed = db.Column(db.DateTime)
+
+    def __init__(self, email):
+        self.id = str(uuid4())
+        self.email = email
 
 
 # Utility functions.
