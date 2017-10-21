@@ -1,0 +1,18 @@
+.top-bar {
+	padding-top: 1.5em !important;
+	padding-left: 1.5em;
+	padding-right: 1.5em;
+}
+
+.nav-bar {
+	min-height: 3.5em;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+.nav-bar .btn {
+	font-size: 1.5em;
+	font-weight: normal;
+}

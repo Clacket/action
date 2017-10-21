@@ -1,6 +1,62 @@
 body {
+	background-color: #0e0e0e;
+	color: #ecf0f1;
+	font-family: 'Rajdhani';
 	overflow-x: hidden;
 }
+
+.orange-gradient {
+	color: #0e0e0e;
+	background: #FF512F;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #F09819, #FF512F);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #F09819, #FF512F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+
+.modal-content {
+	background-color: #0e0e0e;
+	color: #ecf0f1;
+}
+
+.modal-content h1, .modal-content h2, .modal-content h3, .modal-content h4, .modal-content h5 {
+	color: #ecf0f1;
+}
+
+.modal-header, .modal-footer {
+	border: none;
+}
+
+.flash-modal-header {
+	background: #FF512F;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #F09819, #FF512F);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #F09819, #FF512F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.modal-body .form-control {
+	background-color: rgba(255,255,255,0.15);
+    color: #F09819;
+    font-weight: bold;
+}
+
+h1, h2, h3, h4 {
+	text-transform: uppercase;
+	letter-spacing: 0.15em;
+}
+
+h1 small, h2 small, h3 small, h4 small {
+	opacity: 0.5;
+}
+
+.friendly {
+	text-transform: none;
+	font-family: 'Gochi Hand';
+	letter-spacing: 0;
+}
+
+.friendly small {
+	opacity: 1;
+}
+
 
 .btn:focus, .btn:active {
  	box-shadow: none;
