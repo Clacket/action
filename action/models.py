@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from shapely.geometry import Point
+from shapely import wkb
 
 import geoalchemy2 as ga
 import onetimepass
@@ -58,6 +59,18 @@ class Showing(db.Model):
             description=request.form.get('description'),
             google_place_id=request.form.get('google_place_id'),
             geometry=geometry.wkt)
+
+    @property
+    def serialize(self):
+        point = wkb.loads(bytes(self.geometry.data))
+        lng, lat = point.x, point.y
+        return dict(
+            name=self.name,
+            phone=self.phone,
+            website=self.website,
+            description=self.description,
+            lat=lat,
+            lng=lng)
 
 
 class Movie(db.Model):
