@@ -10,6 +10,17 @@ body {
 	padding: 
 }
 
+.spinner {
+	text-align: center;
+    font-size: 1em;
+    opacity: 0.4;
+}
+
+.no-movies {
+	opacity: 0.5;
+	margin-left: 1em;
+}
+
 
 .movie-card .btn:hover {
 	opacity: 1;

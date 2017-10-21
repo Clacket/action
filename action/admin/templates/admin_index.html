@@ -38,7 +38,12 @@
 			</div>
 			<div>
 				<h3>Recently Modified</h3>
-				<div id="movie-grid" data-href="{{ url_for('admin.recent_movies', limit=10) }}"></div>
+				<div id="movie-grid" data-href="{{ url_for('admin.recent_movies', limit=10) }}">
+					<h2 class="spinner">
+						<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+						<span class="sr-only">Loading...</span>
+					</h2>
+				</div>
 			</div>
 		</div>
 		<div id="cinema-div" class="content">

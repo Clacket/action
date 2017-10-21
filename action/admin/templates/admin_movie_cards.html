@@ -34,4 +34,9 @@
 	  </div>
 	</div>
 {% endfor %}
+{% if movies | length == 0 %}
+<div class="col-xs-12 no-movies">
+<h4>No movies in the database yet. Add the first one!</h4>
+</div>
+{% endif %}
 </div>
