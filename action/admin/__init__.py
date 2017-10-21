@@ -10,7 +10,8 @@ from action.admin.utils import (
     activated_only, unactivated_only,
     login_admin, LoginException, logout_admin, login_admin_token)
 from action.utils import redirect_back
-from action.models import Admin, AdminInvite, Movie, DBException, db
+from action.models import (
+    Admin, AdminInvite, Movie, Showing, DBException, db)
 
 
 admin = Blueprint(
@@ -165,10 +166,42 @@ def edit_movie(movie_id):
 @authenticate
 def delete_movie(movie_id):
     movie = Movie.query.filter_by(id=movie_id).first()
-    title = movie.title
     if movie is None:
         return 'Movie not found', 404
+    title = movie.title
     db.session.delete(movie)
     db.session.commit()
     flash('Movie {0} deleted!'.format(title))
+    return redirect(url_for('admin.index'))
+
+
+@admin.route('/cinema/new', methods=['POST'])
+@authenticate
+def add_cinema():
+    kwargs = Showing.get_kwargs(request)
+    cinema = Showing(type='cinema', **kwargs)
+    db.session.add(cinema)
+    db.session.commit()
+    flash('Cinema {0} added!'.format(kwargs.get('name')))
+    return redirect(url_for('admin.index'))
+
+
+@admin.route('/cinemas/recent/<int:limit>')
+@authenticate
+def recent_cinemas(limit):
+    cinemas = Showing.query.filter_by(type='cinema').order_by(
+        desc(Showing.last_modified)).limit(limit).all()
+    return render_template('admin_cinema_cards.html', cinemas=cinemas)
+
+
+@admin.route('/cinema/<int:cinema_id>/delete', methods=['POST'])
+@authenticate
+def delete_cinema(cinema_id):
+    cinema = Showing.query.filter_by(id=cinema_id, type='cinema').first()
+    if cinema is None:
+        return 'Cinema not found', 404
+    name = cinema.name
+    db.session.delete(cinema)
+    db.session.commit()
+    flash('Cinema {0} deleted!'.format(name))
     return redirect(url_for('admin.index'))

@@ -1,6 +1,9 @@
 {% extends 'admin_layout.html' %}
 {% from 'global_macros.html' import modal %}
-{% from 'admin_macros.html' import movie_form %}
+{% from 'admin_macros.html' import movie_form, cinema_form %}
+{% block head %}
+<link rel='stylesheet' href="{{ url_for('static', filename='css/typeahead.css') }}" type='text/css' />
+{% endblock %}
 {% block content %}
 <div class="top-bar flex-container flex-row">
 	<div class="logo-tiny logo-black">
@@ -38,7 +41,7 @@
 			</div>
 			<div>
 				<h3>Recently Modified</h3>
-				<div id="movie-grid" data-href="{{ url_for('admin.recent_movies', limit=10) }}">
+				<div class="recent-grid" data-href="{{ url_for('admin.recent_movies', limit=10) }}">
 					<h2 class="spinner">
 						<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
 						<span class="sr-only">Loading...</span>
@@ -47,7 +50,25 @@
 			</div>
 		</div>
 		<div id="cinema-div" class="content">
-			<h3>Control cinemas here</h3>
+			<div class="flex-container flex-row">
+				<button class="btn btn-blue" data-toggle="modal" data-target="#addCinema">
+					<small><i class="fa fa-plus"></i></small> New Cinema
+				</button>
+				{% call modal('addCinema', 'New Cinema') %}
+					{% with endpoint = url_for('admin.add_cinema') %}
+						{{ cinema_form(endpoint) }}
+					{% endwith %}
+				{% endcall %}
+			</div>
+			<div>
+				<h3>Recently Modified</h3>
+				<div class="recent-grid" data-href="{{ url_for('admin.recent_cinemas', limit=10) }}">
+					<h2 class="spinner">
+						<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+						<span class="sr-only">Loading...</span>
+					</h2>
+				</div>
+			</div>
 		</div>
 		<div id="user-div" class="content">
 			<h3>Control users here</h3>
@@ -63,5 +84,7 @@
 {% endblock %}
 
 {% block scripts %}
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOX6QcWKkIJzUK9jkKtvEpFN1zfon7eAc&libraries=places"></script>
 <script src="{{ url_for('admin.static', filename='js/sidebar.js') }}"></script>
+<script src="{{ url_for('admin.static', filename='js/map.js') }}"></script>
 {% endblock %}

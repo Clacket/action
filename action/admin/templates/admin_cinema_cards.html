@@ -1,0 +1,32 @@
+{% from 'global_macros.html' import modal %}
+{% from 'admin_macros.html' import cinema_form %}
+<div class="row">
+{% for cinema in cinemas %}
+	<div class="card movie-card col-xs-12 col-md-3">
+		<div class="card-body">
+	    	<h4 class="card-title">{{ cinema.name }} <small>{% if cinema.phone is not none %} {{ cinema.phone }} {% endif %}</small></h4>
+
+	    	<p class="card-text">{{ cinema.description }}</p>
+
+	    	<button class="btn btn-danger btn-card" title="Delete" data-toggle="modal" data-target="#deleteCinema{{cinema.id}}">
+	    		<small><i class="fa fa-trash-o"></i></small>
+	    	</button>
+		    {% call modal('deleteCinema', 'Delete Cinema', small=True, attached_id=cinema.id) %}
+		    	<h5>Are you sure you want to delete {{ cinema.name }} permenantly?</h5>
+
+		    	<form action="{{ url_for('admin.delete_cinema', cinema_id=cinema.id) }}" method="POST">
+		    		<input type="submit" class="btn btn-danger" value="Yes, delete it">
+	    		 	<button type="button" class="btn btn-default" data-dismiss="modal">
+	    		 		No, wait!
+	    		 	</button>
+		    	</form>
+		    {% endcall %}
+	  </div>
+	</div>
+{% endfor %}
+{% if cinemas | length == 0 %}
+<div class="col-xs-12 no-movies">
+<h4>No cinemas in the database yet. Add the first one!</h4>
+</div>
+{% endif %}
+</div>

@@ -5,6 +5,7 @@ import base64
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from shapely.geometry import Point
 
 import geoalchemy2 as ga
 import onetimepass
@@ -25,11 +26,38 @@ class Showing(db.Model):
     website = db.Column(db.String)
     description = db.Column(db.String)
     phone = db.Column(db.String)
-    geometry = db.Column(ga.Geography('POLYGON', srid=4326,
+    google_place_id = db.Column(db.String)
+    last_modified = db.Column(
+        db.DateTime,
+        default=datetime.datetime.utcnow,
+        onupdate=datetime.datetime.utcnow)
+    geometry = db.Column(ga.Geography('POINT', srid=4326,
                                       spatial_index=False))
     movies = db.relationship(
         'Movie', secondary='movie_showing',
         back_populates='showings', lazy='dynamic')
+
+    def __init__(self, **kwargs):
+        self.type = kwargs.get('type')
+        self.name = kwargs.get('name')
+        self.phone = kwargs.get('phone')
+        self.website = kwargs.get('website')
+        self.description = kwargs.get('description')
+        self.geometry = kwargs.get('geometry')
+        self.google_place_id = kwargs.get('google_place_id')
+
+    @classmethod
+    def get_kwargs(self, request):
+        geometry = Point(
+            float(request.form.get('lng')),
+            float(request.form.get('lat')))
+        return dict(
+            name=request.form.get('name'),
+            phone=request.form.get('phone'),
+            website=request.form.get('website'),
+            description=request.form.get('description'),
+            google_place_id=request.form.get('google_place_id'),
+            geometry=geometry.wkt)
 
 
 class Movie(db.Model):

@@ -22,12 +22,14 @@ $('.side-bar .btn').on('selectToggle', function () {
 $(function () {
 	$('.side-bar .btn').first().click();
 
-	var recent_movies = $('#movie-grid');
-	$.ajax({
-		url: recent_movies.data('href'),
-		method: 'GET',
-		success: function (data) {
-			recent_movies.html(data);
-		}
+	$('.recent-grid').each(function () {
+		var selector = $(this);
+		$.ajax({
+			url: selector.data('href'),
+			method: 'GET',
+			success: function (data) {
+				selector.html(data);
+			}
+		});
 	});
 });

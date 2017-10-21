@@ -12,3 +12,27 @@
 	<input type="submit" class="btn btn-submit" value="Submit">
 </form>
 {% endmacro %}
+
+{% macro cinema_form(endpoint, cinema=None) %}
+<form action="{{ endpoint }}" method="POST">
+	<div class="form-group">
+		<input type="text" class="form-control" name="name" placeholder="Name" {% if cinema is not none %} value="{{ cinema.name }}" {% endif %} required>
+	</div>
+	<div class="form-group">
+		<input type="url" class="form-control" name="website" placeholder="Website" {% if cinema is not none %} value="{{ cinema.website }}" {% endif %}>
+	</div>
+	<div class="form-group">
+		<input type="text" class="form-control" name="phone" placeholder="Phone" {% if cinema is not none %} value="{{ cinema.phone }}" {% endif %} required>
+	</div>
+	<div class="form-group">
+		<textarea name="description" class="form-control" placeholder="Description">{% if cinema is not none %} {{ cinema.description }} {% endif %}</textarea>
+	</div>
+	<div class="form-group">
+		<input type="text" class="address-control form-control" {% if cinema is none %} id="newCinema" {% endif %} name="location" placeholder="Address">
+	</div>
+	<input type="hidden" name="lat" {% if cinema is none %} id="newCinemalat" {% endif %} required>
+	<input type="hidden" name="lng" {% if cinema is none %} id="newCinemalng" {% endif %} required>
+	<input type="hidden" name="google_place_id" {% if cinema is none %} id="newCinemagoogle_place_id" {% endif %} required>
+	<input type="submit" class="btn btn-submit" value="Submit">
+</form>
+{% endmacro %}
