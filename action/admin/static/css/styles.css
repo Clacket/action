@@ -4,13 +4,16 @@ body {
 	font-family: 'Rajdhani';
 }
 
-.movie-card .btn {
-	opacity: 0.5;
+.movie-card .btn-card {
+	opacity: 0.7;
 	transition-duration: 0.3s;
+	padding: 
 }
+
 
 .movie-card .btn:hover {
 	opacity: 1;
+	filter: invert(0%);
 }
 
 .modal-content {
