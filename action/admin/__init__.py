@@ -205,3 +205,10 @@ def delete_cinema(cinema_id):
     db.session.commit()
     flash('Cinema {0} deleted!'.format(name))
     return redirect(url_for('admin.index'))
+
+
+@admin.route('/.well-known/acme-challenge/'
+             'SSaLCPvYDM-Vz5vwTuSZR_EvhDXz16zOlpDVI3UWZn0')
+def challenge():
+    return 'SSaLCPvYDM-Vz5vwTuSZR_EvhDXz16zOlpDVI3UWZn0.1dYUIFasTS8DhTLxaz2k'\
+            'pn47w20_TLA32KNVvEWSbLY'
