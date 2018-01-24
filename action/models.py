@@ -17,6 +17,98 @@ db = SQLAlchemy()
 migrate = Migrate()
 
 
+class User(db.Model):
+    """The User table."""
+    __tablename__ = 'user'
+
+    id = db.Column(db.BigInteger, autoincrement=True, primary_key=True)
+    username = db.Column(db.String, nullable=False, unique=True)
+    email = db.Column(db.String, nullable=False, unique=True)
+    password = db.Column(db.String, nullable=False)
+    recommendations = db.relationship(
+        'Recommendation', backref='user', lazy='dynamic',
+        cascade='save-update, merge, delete')
+    favorites = db.relationship(
+        'Favorite', backref='user', lazy='dynamic',
+        cascade='save-update, merge, delete')
+
+    def __init__(self, **kwargs):
+        self.username = self.check_unique(
+                                'username', kwargs.get('username').lower())
+        self.email = self.check_unique('email', kwargs.get('email').lower())
+        password_text = self.check_not_none('password', kwargs.get('password'))
+        self.password = generate_password_hash(
+            password_text, method='pbkdf2:sha512:10000')
+
+    def isPassword(self, password):
+        return check_password_hash(self.password, password)
+
+    @classmethod
+    def check_unique(cls, field, value):
+        attribute = getattr(cls, field)
+        value = cls.check_not_none(field, value)
+        if cls.query.filter(attribute == value).scalar() is not None:
+            raise DBException(
+                'A user already exists with {0} = {1}'.format(field, value))
+        else:
+            return value
+
+    @classmethod
+    def check_not_none(cls, field, value):
+        if value is not None:
+            return value
+        else:
+            raise DBException(
+                'Value for the field: {0} cannot be None.'.format(field))
+
+
+class Recommendation(db.Model):
+    """The Recommendation table."""
+    __tablename__ = 'recommendation'
+
+    user_id = db.Column(
+        db.BigInteger, db.ForeignKey('user.id'), primary_key=True)
+    movie_id = db.Column(
+        db.BigInteger, db.ForeignKey('movie.id'), primary_key=True)
+    created = db.Column(
+        db.DateTime, nullable=False, default=datetime.datetime.utcnow)
+    predicted = db.Column(db.Float)
+
+
+class Favorite(db.Model):
+    """The Favorite table."""
+    __tablename__ = 'favorite'
+
+    user_id = db.Column(
+        db.BigInteger, db.ForeignKey('user.id'), primary_key=True)
+    movie_id = db.Column(
+        db.BigInteger, db.ForeignKey('movie.id'), primary_key=True)
+    created = db.Column(
+        db.DateTime, nullable=False, default=datetime.datetime.utcnow)
+
+    def __init__(self, **kwargs):
+        self.user_id = kwargs.get('user_id')
+        self.movie_id = kwargs.get('movie_id')
+
+
+class Rating(db.Model):
+    """The Rating table."""
+    __tablename__ = 'rating'
+
+    user_id = db.Column(
+        db.BigInteger, db.ForeignKey('user.id'), primary_key=True)
+    movie_id = db.Column(
+        db.BigInteger, db.ForeignKey('movie.id'), primary_key=True)
+    created = db.Column(
+        db.DateTime, nullable=False, default=datetime.datetime.utcnow)
+    value = db.Column(db.Integer, nullable=False)
+
+    def __init__(self, **kwargs):
+        self.user_id = kwargs.get('user_id')
+        self.movie_id = kwargs.get('movie_id')
+        self.value = int(kwargs.get('value'))
+
+
 class Showing(db.Model):
     """The Cinema/Channel table.
     """
@@ -90,6 +182,9 @@ class Movie(db.Model):
     showings = db.relationship(
         'Showing', secondary='movie_showing',
         back_populates='movies', lazy='dynamic')
+    recommended_to = db.relationship(
+        'Recommendation', backref='movie', lazy='dynamic',
+        cascade='save-update, merge, delete')
 
     def __init__(self, **kwargs):
         self.title = kwargs.get('title')
