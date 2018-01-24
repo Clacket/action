@@ -109,6 +109,17 @@ class Rating(db.Model):
         self.value = int(kwargs.get('value'))
 
 
+class Distance(db.Model):
+    """The distance matrix between movies."""
+    __tablename__ = 'distance'
+
+    first_movie_id = db.Column(
+        db.BigInteger, db.ForeignKey('movie.id'), primary_key=True)
+    second_movie_id = db.Column(
+        db.BigInteger, db.ForeignKey('movie.id'), primary_key=True)
+    value = db.Column(db.Float, nullable=False)
+
+
 class Showing(db.Model):
     """The Cinema/Channel table.
     """
