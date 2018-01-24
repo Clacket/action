@@ -8,6 +8,7 @@
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/global_styles.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ url_for('frontend.static', filename='css/styles.css') }}">
+	<link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
 	{% block head %}
 	{% endblock %}
 </head>
@@ -53,6 +54,10 @@
 		</div>
 		{% block content %}
 		{% endblock %}
+		<footer class="footer text-center">
+			&lt;Find us on 
+			<a target="_blank" href="https://github.com/Clacket"><i class="fa fa-github"></i> github</a>/&gt;
+		</footer>
 	</div>
 	<script src="https://use.fontawesome.com/64441cc03d.js"></script>
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>

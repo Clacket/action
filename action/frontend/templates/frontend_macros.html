@@ -3,7 +3,7 @@
 	<div class="col-xs-12 col-md-6 col-centered">
 		<h2><small><i class="fa fa-search"></i></small> Search Movies</h2>
 		<form action="{{ url_for('frontend.search') }}" method="GET">
-			<input class="form-control" type="text" name="query" value="{{ query }}" placeholder="Title">
+			<input class="form-control search-box" type="text" name="query" value="{{ query }}" placeholder="Title">
 		</form>
 	</div>
 </div>

@@ -2,4 +2,36 @@
 {% from 'frontend_macros.html' import search %}
 {% block content %}
 {{ search() }}
+<div class="row">
+	<div class="col-xs-12 col-md-4">
+		<div class="home-card col-centered">
+			<h3><small><i class="fa fa-magic"></i></small> Personalized</h3>
+			<ul>
+				<li>Recommendations based on what you like.</li>
+				<li>Find Cinemas and Movies near you easily.</li>
+				<li>Save your favorites for the future.</li>
+			</ul>
+		</div>
+	</div>
+	<div class="col-xs-12 col-md-4">
+		<div class="home-card col-centered">
+			<h3><small><i class="fa fa-tags"></i></small> Comprehensive</h3>
+			<ul>
+				<li>A wide collection of different genres,</li>
+				<li>languages, and</li>
+				<li>release platforms.</li>
+			</ul>
+		</div>
+	</div>
+	<div class="col-xs-12 col-md-4">
+		<div class="home-card col-centered">
+			<h3><small><i class="fa fa-hand-peace-o"></i></small> Free</h3>
+			<ul>
+				<li>No subscription.</li>
+				<li>No fee.</li>
+				<li>No ads.</li>
+			</ul>
+		</div>
+	</div>
+</div>
 {% endblock %}
