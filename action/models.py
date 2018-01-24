@@ -26,11 +26,11 @@ class User(db.Model):
     email = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
     recommendations = db.relationship(
-        'Recommendation', backref='user', lazy='dynamic',
-        cascade='save-update, merge, delete')
+        'Movie', secondary='recommendation',
+        back_populates='recommended_to', lazy='dynamic')
     favorites = db.relationship(
-        'Favorite', backref='user', lazy='dynamic',
-        cascade='save-update, merge, delete')
+        'Movie', secondary='favorite',
+        back_populates='favorited_by', lazy='dynamic')
 
     def __init__(self, **kwargs):
         self.username = self.check_unique(
@@ -200,8 +200,11 @@ class Movie(db.Model):
         'Showing', secondary='movie_showing',
         back_populates='movies', lazy='dynamic')
     recommended_to = db.relationship(
-        'Recommendation', backref='movie', lazy='dynamic',
-        cascade='save-update, merge, delete')
+        'User', secondary='recommendation',
+        back_populates='recommendations', lazy='dynamic')
+    favorited_by = db.relationship(
+        'User', secondary='favorite',
+        back_populates='favorites', lazy='dynamic')
 
     def __init__(self, **kwargs):
         self.title = kwargs.get('title')
