@@ -26,6 +26,7 @@
 						<i class="fa fa-user-circle-o"></i> {{ session['userUsername'] }}
 					</button>
 					<div class="dropdown-menu" aria-labelledby="dropdownBtn">
+						<a class="dropdown-item" href="{{ url_for('frontend.profile') }}">Profile</a>
 					    <a class="dropdown-item" href="{{ url_for('frontend.logout') }}">Logout</a>
 					</div>
 				</div>
@@ -43,7 +44,11 @@
 		</div>
 		<div class="row nav-bar orange-gradient">
 			<div class="col-xs-12 flex-container flex-row">
-				<button class="btn btn-transparent clickable" data-href="{{ url_for('frontend.cinemas') }}">Cinemas</button>
+				<button class="btn btn-transparent clickable" data-href="{{ url_for('frontend.cinemas') }}"><i class="fa fa-ticket"></i> Cinemas</button>
+				<button class="btn btn-transparent clickable" data-href="{{ url_for('frontend.browse') }}"><i class="fa fa-film"></i> Browse</button>
+				{% if 'userId' in session %}
+				<button class="btn btn-transparent clickable" data-href="{{ url_for('frontend.recommendations') }}"><i class="fa fa-star-o"></i> Recs</button>
+				{% endif %}
 			</div>
 		</div>
 		{% block content %}

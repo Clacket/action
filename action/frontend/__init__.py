@@ -1,10 +1,11 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import (
+    Blueprint, render_template, request, redirect, url_for, session)
 
 from action.utils import (
     authenticate, anonymous_only,
     login_user, LoginException, logout_user, redirect_back)
 
-from action.models import DBException, User, db, Movie
+from action.models import DBException, User, db, Movie, Recommendation
 
 frontend = Blueprint(
     'frontend', __name__, static_folder='static',
@@ -20,6 +21,29 @@ def index():
 @frontend.route('/cinemas')
 def cinemas():
     return render_template('frontend_cinemas.html')
+
+
+@frontend.route('/browse')
+def browse():
+    return render_template('frontend_browse.html')
+
+
+@frontend.route('/profile')
+@authenticate
+def profile():
+    user_id = session['userId']
+    user = User.query.filter_by(id=user_id).first()
+    return render_template('frontend_profile.html', user=user)
+
+
+@frontend.route('/recommendations')
+@authenticate
+def recommendations():
+    user_id = session['userId']
+    movies = Movie.query.join(Recommendation).filter(
+        Recommendation.user_id == user_id).order_by(
+        Recommendation.created.desc(), Recommendation.predicted.desc()).all()
+    return render_template('frontend_recommendations.html', movies=movies)
 
 
 @frontend.route('/login', methods=['GET', 'POST'])

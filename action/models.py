@@ -115,17 +115,6 @@ class Rating(db.Model):
         self.value = int(kwargs.get('value'))
 
 
-class Distance(db.Model):
-    """The distance matrix between movies."""
-    __tablename__ = 'distance'
-
-    first_movie_id = db.Column(
-        db.BigInteger, db.ForeignKey('movie.id'), primary_key=True)
-    second_movie_id = db.Column(
-        db.BigInteger, db.ForeignKey('movie.id'), primary_key=True)
-    value = db.Column(db.Float, nullable=False)
-
-
 class Showing(db.Model):
     """The Cinema/Channel table.
     """
@@ -205,9 +194,6 @@ class Movie(db.Model):
     favorited_by = db.relationship(
         'User', secondary='favorite',
         back_populates='favorites', lazy='dynamic')
-    near = db.relationship(
-        'Movie', secondary='distance',
-        back_populates='origin', lazy='dynamic')
 
     def __init__(self, **kwargs):
         self.title = kwargs.get('title')
@@ -317,6 +303,23 @@ class AdminInvite(db.Model):
     def __init__(self, email):
         self.id = str(uuid4())
         self.email = email
+
+
+class Distance(db.Model):
+    """The distance matrix between movies."""
+    __tablename__ = 'distance'
+
+    first_movie_id = db.Column(
+        db.BigInteger, db.ForeignKey('movie.id'), primary_key=True)
+    first_movie = db.relationship(
+        'Movie', backref='first_nearest_list',
+        primaryjoin=(Movie.id == first_movie_id))
+    second_movie_id = db.Column(
+        db.BigInteger, db.ForeignKey('movie.id'), primary_key=True)
+    second_movie = db.relationship(
+        'Movie', backref='second_nearest_list',
+        primaryjoin=(Movie.id == second_movie_id))
+    value = db.Column(db.Float, nullable=False)
 
 
 # Utility functions.
