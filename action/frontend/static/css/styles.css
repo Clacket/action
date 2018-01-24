@@ -4,6 +4,22 @@
 	padding-right: 1.5em;
 }
 
+.top-bar button {
+	color: white;
+}
+
+.top-bar .settings {
+	justify-content: flex-end;
+}
+
+.register-btn {
+	margin-bottom: 1em;
+}
+
+.top-bar button:hover {
+	color: #FF512F;
+}
+
 .nav-bar {
 	min-height: 3.5em;
 	padding-top: 0.5em;

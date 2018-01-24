@@ -10,6 +10,7 @@
   background-color: rgba(0, 0, 0, 0.09);
 }
  
+
 ::-webkit-scrollbar-thumb:vertical {
   
   background: rgba(0,0,0,0.5);
@@ -29,6 +30,10 @@ body {
 	color: #ecf0f1;
 	font-family: 'Rajdhani';
 	overflow-x: hidden;
+}
+
+.top-bar div:not('.dropdown-menu') {
+	display: inline-block;
 }
 
 .orange-gradient {

@@ -34,10 +34,6 @@
 	padding-top: 1em;
 }
 
-.top-bar div:not('.dropdown-menu') {
-	display: inline-block;
-}
-
 .top-bar .name {
 	margin-top: 0.3em;
     margin-left: -0.5em;

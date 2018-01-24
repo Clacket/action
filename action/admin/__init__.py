@@ -72,9 +72,11 @@ def register(invite_id):
                 invite.claimed = datetime.datetime.utcnow()
                 username = request.form['username'].lower()
                 password = request.form['password']
+                password_confirm = request.form['password_confirm']
                 email = invite.email.lower()
                 admin = Admin(
-                    username=username, password=password, email=email)
+                    username=username, password=password, email=email,
+                    password_confirm=password_confirm)
                 db.session.add(admin)
                 db.session.commit()
                 login_admin(username, password)

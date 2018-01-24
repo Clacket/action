@@ -3,6 +3,8 @@ from sqlalchemy import and_
 from shapely.geometry import Point
 
 from action.models import Showing
+# from action.utils import (
+#     authenticate, anonymous_only)
 
 api = Blueprint('api', __name__, url_prefix='/api/v1')
 

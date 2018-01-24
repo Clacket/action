@@ -10,10 +10,10 @@
 			<h1 class="friendly">Welcome <small><i class="em em-wave"></i></small></h1>
 			{{ alert(error) }}
 			<div class="form-group">
-				<input type="text" class="form-control"  name="username" placeholder="Username">
+				<input type="text" class="form-control"  name="username" placeholder="Username" required>
 				<input type="email" class="form-control" value="{{ email }}" readonly>
-				<input type="password" name="password" class="form-control" placeholder="Password">
-				<input type="password" name="password_confirm" class="form-control" placeholder="Confirm Password">
+				<input type="password" name="password" class="form-control" placeholder="Password" required>
+				<input type="password" name="password_confirm" class="form-control" placeholder="Confirm Password" required>
 				<input type="submit" value="Next" class="btn btn-submit">
 			</div>
 		</form>

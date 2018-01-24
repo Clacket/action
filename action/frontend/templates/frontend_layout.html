@@ -13,15 +13,33 @@
 </head>
 <body>
 	<div class="container-fluid content">
-		<div class="row top-bar">
-			<div class="col-xs-12 flex-container flex-row">
-					<div class="logo-tiny">
-						{% include 'logo.svg' %}
+		<div class="top-bar flex-container flex-row">
+				<div class="logo-tiny">
+					{% include 'logo.svg' %}
+				</div>
+				<div class="name clickable" data-href="{{ url_for('frontend.index') }}">
+					<h2>Clacket</h2>
+				</div>
+				{% if 'userId' in session %}
+				<div class="dropdown settings float-right">
+					<button type="button" id="dropdownBtn" class="btn btn-transparent dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						{{ session['userUsername'] }}
+					</button>
+					<div class="dropdown-menu" aria-labelledby="dropdownBtn">
+					    <a class="dropdown-item" href="{{ url_for('frontend.logout') }}">Logout</a>
 					</div>
-					<div class="name clickable" data-href="{{ url_for('frontend.index') }}">
-						<h2>Clacket</h2>
+				</div>
+				{% else %}
+				<div class="dropdown settings float-right">
+					<button type="button" id="dropdownBtn" class="btn btn-transparent dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Account
+					</button>
+					<div class="dropdown-menu" aria-labelledby="dropdownBtn">
+					    <a class="dropdown-item" href="{{ url_for('frontend.login') }}">Login</a>
+					    <a class="dropdown-item" href="{{ url_for('frontend.register') }}">Register</a>
 					</div>
-			</div>
+				</div>
+				{% endif %}
 		</div>
 		<div class="row nav-bar orange-gradient">
 			<div class="col-xs-12 flex-container flex-row">

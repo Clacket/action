@@ -37,6 +37,7 @@ class User(db.Model):
                                 'username', kwargs.get('username').lower())
         self.email = self.check_unique('email', kwargs.get('email').lower())
         password_text = self.check_not_none('password', kwargs.get('password'))
+        self.check_equal(password_text, kwargs.get('password_confirm'))
         self.password = generate_password_hash(
             password_text, method='pbkdf2:sha512:10000')
 
@@ -60,6 +61,11 @@ class User(db.Model):
         else:
             raise DBException(
                 'Value for the field: {0} cannot be None.'.format(field))
+
+    @classmethod
+    def check_equal(cls, pass1, pass2):
+        if pass1 != pass2:
+            raise DBException('Passwords do not match.')
 
 
 class Recommendation(db.Model):
@@ -248,6 +254,7 @@ class Admin(db.Model):
         self.username = self.check_unique('username', kwargs.get('username'))
         self.email = self.check_unique('email', kwargs.get('email'))
         password_text = self.check_not_none('password', kwargs.get('password'))
+        self.check_equal(password_text, kwargs.get('password_confirm'))
         self.password = generate_password_hash(
             password_text, method='pbkdf2:sha512:10000')
         self.otp_secret = base64.b32encode(os.urandom(10)).decode('utf-8')
@@ -282,6 +289,11 @@ class Admin(db.Model):
         else:
             raise DBException(
                 'Value for the field: {0} cannot be None.'.format(field))
+
+    @classmethod
+    def check_equal(cls, pass1, pass2):
+        if pass1 != pass2:
+            raise DBException('Passwords do not match.')
 
 
 class AdminInvite(db.Model):
