@@ -205,6 +205,9 @@ class Movie(db.Model):
     favorited_by = db.relationship(
         'User', secondary='favorite',
         back_populates='favorites', lazy='dynamic')
+    near = db.relationship(
+        'Movie', secondary='distance',
+        back_populates='origin', lazy='dynamic')
 
     def __init__(self, **kwargs):
         self.title = kwargs.get('title')
