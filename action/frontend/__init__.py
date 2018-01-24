@@ -4,7 +4,7 @@ from action.utils import (
     authenticate, anonymous_only,
     login_user, LoginException, logout_user, redirect_back)
 
-from action.models import DBException, User, db
+from action.models import DBException, User, db, Movie
 
 frontend = Blueprint(
     'frontend', __name__, static_folder='static',
@@ -65,3 +65,12 @@ def register():
 def logout():
     logout_user()
     return redirect_back('frontend.index')
+
+
+@frontend.route('/search', methods=['GET'])
+def search():
+    query = request.args.get('query', '')
+    words = query.split(' ')
+    like = '%' + '%'.join([w for w in words]) + '%'
+    movies = Movie.query.filter(Movie.title.ilike(like)).all()
+    return render_template('frontend_results.html', movies=movies, query=query)

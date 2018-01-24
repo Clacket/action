@@ -1,0 +1,15 @@
+{% extends 'frontend_layout.html' %}
+{% from 'frontend_macros.html' import search %}
+{% block content %}
+{{ search(query=query) }}
+<div class="row">
+	<div class="col-xs-12">
+		<h2>Results</h2>
+		<ul class="list-inline">
+		{% for movie in movies %}
+			<li>{{ movie.title }}</li>
+		{% endfor %}
+		</ul>
+	</div>
+</div>
+{% endblock %}

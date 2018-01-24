@@ -23,7 +23,7 @@
 				{% if 'userId' in session %}
 				<div class="dropdown settings float-right">
 					<button type="button" id="dropdownBtn" class="btn btn-transparent dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						{{ session['userUsername'] }}
+						<i class="fa fa-user-circle-o"></i> {{ session['userUsername'] }}
 					</button>
 					<div class="dropdown-menu" aria-labelledby="dropdownBtn">
 					    <a class="dropdown-item" href="{{ url_for('frontend.logout') }}">Logout</a>
