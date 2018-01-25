@@ -9,9 +9,9 @@ from action.admin.utils import (
     authenticate, anonymous_only,
     activated_only, unactivated_only,
     login_admin, LoginException, logout_admin, login_admin_token)
-from action.utils import redirect_back
+from action.utils import redirect_back, upload_picture, UploadException
 from action.models import (
-    Admin, AdminInvite, Movie, Showing, DBException, db)
+    Admin, AdminInvite, Movie, Showing, Picture, DBException, db)
 
 
 admin = Blueprint(
@@ -134,7 +134,7 @@ def logout():
 @admin.route('/movies/recent/<int:limit>')
 @authenticate
 def recent_movies(limit):
-    movies = Movie.query.order_by(
+    movies = Movie.query.outerjoin(Picture).order_by(
         desc(Movie.last_modified)).limit(limit).all()
     return render_template('admin_movie_cards.html', movies=movies)
 
@@ -142,25 +142,49 @@ def recent_movies(limit):
 @admin.route('/movie/new', methods=['POST'])
 @authenticate
 def add_movie():
+    error = None
     kwargs = Movie.get_kwargs(request)
     movie = Movie(**kwargs)
     db.session.add(movie)
-    db.session.commit()
-    flash('Movie {0} added!'.format(kwargs.get('title')))
+    if 'poster' in request.files and request.files['poster'].filename != '':
+        try:
+            db.session.flush()
+            url = upload_picture(request.files['poster'])
+            picture = Picture(movie_id=movie.id, url=url)
+            db.session.add(picture)
+        except UploadException as e:
+            error = str(e)
+    if error is None:
+        db.session.commit()
+        flash('Movie {0} added!'.format(kwargs.get('title')))
+    else:
+        flash(error)
     return redirect(url_for('admin.index'))
 
 
 @admin.route('/movie/<int:movie_id>/edit', methods=['POST'])
 @authenticate
 def edit_movie(movie_id):
+    error = None
     kwargs = Movie.get_kwargs(request)
     movie = Movie.query.filter_by(id=movie_id).first()
     if movie is None:
         return 'Movie not found.', 404
+    if 'poster' in request.files and request.files['poster'].filename != '':
+        try:
+            db.session.flush()
+            url = upload_picture(request.files['poster'])
+            picture = Picture(movie_id=movie.id, url=url)
+            db.session.add(picture)
+        except UploadException as e:
+            error = str(e)
     for kwarg, value in kwargs.items():
         setattr(movie, kwarg, value)
-    db.session.commit()
-    flash('Movie {0} edited!'.format(kwargs.get('title')))
+    if error is None:
+        db.session.commit()
+        flash('Movie {0} edited!'.format(kwargs.get('title')))
+    else:
+        flash(error)
     return redirect(url_for('admin.index'))
 
 

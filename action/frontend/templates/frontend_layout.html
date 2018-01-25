@@ -43,17 +43,19 @@
 				</div>
 				{% endif %}
 		</div>
-		<div class="row nav-bar orange-gradient">
-			<div class="col-xs-12 flex-container flex-row">
-				<button class="btn btn-transparent clickable" data-href="{{ url_for('frontend.cinemas') }}"><i class="fa fa-ticket"></i> Cinemas</button>
-				<button class="btn btn-transparent clickable" data-href="{{ url_for('frontend.browse') }}"><i class="fa fa-film"></i> Browse</button>
-				{% if 'userId' in session %}
-				<button class="btn btn-transparent clickable" data-href="{{ url_for('frontend.recommendations') }}"><i class="fa fa-star-o"></i> Recs</button>
-				{% endif %}
+		<div class="container-fluid">
+			<div class="row nav-bar orange-gradient">
+				<div class="col-xs-12 flex-container flex-row">
+					<button class="btn btn-transparent clickable" data-href="{{ url_for('frontend.cinemas') }}"><i class="fa fa-ticket"></i> Cinemas</button>
+					<button class="btn btn-transparent clickable" data-href="{{ url_for('frontend.browse') }}"><i class="fa fa-film"></i> Browse</button>
+					{% if 'userId' in session %}
+					<button class="btn btn-transparent clickable" data-href="{{ url_for('frontend.recommendations') }}"><i class="fa fa-star-o"></i> Recs</button>
+					{% endif %}
+				</div>
 			</div>
+			{% block content %}
+			{% endblock %}
 		</div>
-		{% block content %}
-		{% endblock %}
 		<footer class="footer text-center">
 			&lt;Find us on 
 			<a target="_blank" href="https://github.com/Clacket"><i class="fa fa-github"></i> github</a>/&gt;

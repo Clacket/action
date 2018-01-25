@@ -1,10 +1,20 @@
 {% macro movie_form(endpoint, movie=None) %}
-<form action="{{ endpoint }}" method="POST">
+<form action="{{ endpoint }}" method="POST" enctype="multipart/form-data">
+	{% if movie is not none %}
+		{% for picture in movie.pictures %}
+			{% if loop.last %}
+				<img class="poster" src="{{picture.url}}">
+			{% endif %}
+		{% endfor %}
+	{% endif %}
 	<div class="form-group">
 		<input type="text" class="form-control" name="title" placeholder="Title" {% if movie is not none %} value="{{ movie.title }}" {% endif %} required>
 	</div>
 	<div class="form-group">
 		<input type="number" class="form-control" name="year" placeholder="Year of Release" min="1900" {% if movie is not none %} value="{{ movie.year }}" {% endif %} required>
+	</div>
+	<div class="form-group">
+		<input type="file" class="form-control" name="poster">
 	</div>
 	<div class="form-group">
 		<textarea name="description" class="form-control" placeholder="Description">{% if movie is not none %} {{ movie.description }} {% endif %}</textarea>

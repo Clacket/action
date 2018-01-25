@@ -21,6 +21,12 @@
 	filter: invert(0%);
 }
 
+.movie-card .poster {
+	width: 100%;
+	margin-bottom: 1em;
+	border-radius: 0.2em;
+}
+
 .qr-code {
 	margin-bottom: 0.5em;
 }

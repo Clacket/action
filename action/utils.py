@@ -1,9 +1,16 @@
+import os
+import boto3
+from uuid import uuid4
 from urllib.parse import urlparse, urljoin
 
 from flask import redirect, request, url_for, session
+from werkzeug.utils import secure_filename
 from functools import wraps
 
 from action.models import User
+
+S3_FOLDER = os.environ.get('S3_FOLDER', 'img')
+S3_BUCKET = 'clacket'
 
 
 def redirect_back(endpoint, **values):
@@ -85,6 +92,44 @@ def logout_user():
     """Log user out."""
     session.pop('userId', None)
     session.pop('userUsername', None)
+
+
+def upload_picture(file):
+    if file.content_type[:6] == 'image/':
+        source_filename = secure_filename(file.filename)
+        destination_filename = '{0}/{1}_{2}'.format(
+            S3_FOLDER, uuid4().hex, source_filename)
+        file.filename = destination_filename
+        return upload_to_s3(file)
+    else:
+        raise UploadException('File is not an image.')
+
+
+def s3_url(filename):
+    return 'https://{0}.s3.amazonaws.com/{1}'.format(
+        S3_BUCKET, filename)
+
+
+def upload_to_s3(file, acl='public-read'):
+    s3_client = boto3.client('s3')
+    try:
+        s3_client.upload_fileobj(
+            file,
+            S3_BUCKET,
+            file.filename,
+            ExtraArgs={
+                'ACL': acl,
+                'ContentType': file.content_type
+            }
+        )
+        return s3_url(file.filename)
+    except Exception as e:
+        print(str(e))
+        raise UploadException('Could not upload photo. Please try again.')
+
+
+class UploadException(Exception):
+    pass
 
 
 class LoginException(Exception):

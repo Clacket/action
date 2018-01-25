@@ -7,6 +7,12 @@
 		<div class="card-body">
 	    	<h4 class="card-title">{{ movie.title }} <small>{{ movie.year }}</small></h4>
 
+	    	{% for picture in movie.pictures %}
+	    		{% if loop.last %}
+	    			<img class="poster" src="{{ picture.url }}">
+	    		{% endif %}
+	    	{% endfor %}
+
 	    	<p class="card-text">{{ movie.description }}</p>
 
 	    	<button class="btn btn-secondary btn-card" title="Edit" data-toggle="modal" data-target="#editMovie{{movie.id}}">

@@ -194,6 +194,9 @@ class Movie(db.Model):
     favorited_by = db.relationship(
         'User', secondary='favorite',
         back_populates='favorites', lazy='dynamic')
+    pictures = db.relationship(
+        'Picture', backref='movie', lazy='dynamic',
+        cascade='save-update, merge, delete')
 
     def __init__(self, **kwargs):
         self.title = kwargs.get('title')
@@ -227,6 +230,22 @@ class MovieShowing(db.Model):
         db.BigInteger, db.ForeignKey('showing.id'), primary_key=True)
     time_from = db.Column(db.DateTime)
     time_to = db.Column(db.DateTime)
+
+
+class Picture(db.Model):
+    """Picture class for movies or other entities."""
+
+    __tablename__ = 'picture'
+
+    id = db.Column(db.BigInteger, autoincrement=True, primary_key=True)
+    movie_id = db.Column(db.BigInteger, db.ForeignKey('movie.id'))
+    created = db.Column(
+        db.DateTime, nullable=False, default=datetime.datetime.utcnow)
+    url = db.Column(db.String, nullable=False)
+
+    def __init__(self, **kwargs):
+        self.movie_id = kwargs.get('movie_id')
+        self.url = kwargs.get('url')
 
 
 class Admin(db.Model):
