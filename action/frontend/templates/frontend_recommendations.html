@@ -5,12 +5,10 @@
 		<h2>Recommendations</h2>
 	</div>
 </div>
-<div class="row">
-	<div class="col-xs-12">
-		{% if movies | length == 0 %}
-		<p>You don't have any recommendations yet. Rate some movies to get started!</p>
-		{% else %}
-		{% endif %}
-	</div>
+<div class="recent-grid" data-href="{{ url_for('frontend.recommended_movies', limit=40) }}">
+	<h5 class="spinner">
+		<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+		<span class="sr-only">Loading...</span>
+	</h5>
 </div>
 {% endblock %}

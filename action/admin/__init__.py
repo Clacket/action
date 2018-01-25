@@ -134,7 +134,7 @@ def logout():
 @admin.route('/movies/recent/<int:limit>')
 @authenticate
 def recent_movies(limit):
-    movies = Movie.query.outerjoin(Picture).order_by(
+    movies = Movie.query.order_by(
         desc(Movie.last_modified)).limit(limit).all()
     return render_template('admin_movie_cards.html', movies=movies)
 

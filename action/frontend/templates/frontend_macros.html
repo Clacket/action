@@ -8,3 +8,45 @@
 	</div>
 </div>
 {% endmacro %}
+
+{% macro movie_card(movie) %}
+<div class="margin-bottom col-xs-12 col-md-3">
+	<!--img class="card-img-top" alt="Movie Poster"-->
+	<div class="card movie-card card-body">
+		{% for picture in movie.pictures %}
+    		{% if loop.last %}
+    			<img class="poster" src="{{ picture.url }}">
+    		{% endif %}
+    	{% endfor %}
+    	<a href="{{ url_for('frontend.movie', movie_id=movie.id) }}">
+    		<h4 class="card-title" data-href=>{{ movie.title }} <small>{{ movie.year }}</small></h4>
+    	</a>
+    	<span class="card-rating">{{ rating_stars(movie.avg_rating) }} {% if movie.avg_rating is none %}N/A{% else %}{{ movie.avg_rating | round(2, 'common') }}{% endif %}</span>
+    	<p class="card-text">{{ movie.description }}</p>
+  </div>
+</div>
+{% endmacro %}
+
+{% macro rating_stars(rating) %}
+  {% if rating is none %}
+  {% set rating = 0 %}
+  {% endif %}
+  {% set remainder = rating % 1 %}
+  {% set full = (rating - remainder) | int %}
+  {% set half = 0 %}
+  {% if remainder >= 0.5 %}
+    {% set half = 1 %}
+  {% endif %}
+  {% set empty = 5 - (full + half) %}
+
+  {% for x in range(full) %}
+    <i class="fa fa-star"></i>
+  {% endfor %}
+  {% for x in range(half) %}
+    <i class="fa fa-star-half-o"></i>
+  {% endfor %}
+  {% for x in range(empty) %}
+    <i class="fa fa-star-o"></i>
+  {% endfor %}
+
+{% endmacro %}

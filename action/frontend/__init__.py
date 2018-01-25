@@ -25,8 +25,46 @@ def cinemas():
 
 @frontend.route('/browse')
 def browse():
-    movies = Movie.query.order_by(Movie.last_modified.desc()).all()
-    return render_template('frontend_browse.html', movies=movies)
+    return render_template('frontend_browse.html')
+
+
+@frontend.route('/movies/recent/<int:limit>')
+def recent_movies(limit):
+    movies = Movie.query.order_by(
+        Movie.last_modified.desc()).limit(limit).all()
+    ifempty = 'No movies in our database yet! Check back later.'
+    return render_template(
+        'frontend_movie_cards.html', movies=movies, ifempty=ifempty)
+
+
+@frontend.route('/movies/popular/<int:limit>')
+def popular_movies(limit):
+    movies = Movie.query.order_by(Movie.avg_rating.desc()).all()
+    ifempty = 'No movies in our database yet! Check back later.'
+    return render_template(
+        'frontend_movie_cards.html', movies=movies, ifempty=ifempty)
+
+
+@frontend.route('/movies/recommended/<int:limit>')
+@authenticate
+def recommended_movies(limit):
+    user_id = session['userId']
+    movies = Movie.query.join(Recommendation).filter(
+        Recommendation.user_id == user_id).order_by(
+        Recommendation.created.desc(), Recommendation.predicted.desc()).all()
+    ifempty = 'No recommendations for you yet! '\
+              'Rate some movies to get started.'
+    return render_template(
+        'frontend_movie_cards.html', movies=movies, ifempty=ifempty)
+
+
+@frontend.route('/movie/<int:movie_id>')
+def movie(movie_id):
+    movie = Movie.query.filter_by(id=movie_id).first()
+    if movie is None:
+        return 'Movie not found.', 404
+    else:
+        return render_template('frontend_movie.html', movie=movie)
 
 
 @frontend.route('/profile')
@@ -40,11 +78,7 @@ def profile():
 @frontend.route('/recommendations')
 @authenticate
 def recommendations():
-    user_id = session['userId']
-    movies = Movie.query.join(Recommendation).filter(
-        Recommendation.user_id == user_id).order_by(
-        Recommendation.created.desc(), Recommendation.predicted.desc()).all()
-    return render_template('frontend_recommendations.html', movies=movies)
+    return render_template('frontend_recommendations.html')
 
 
 @frontend.route('/login', methods=['GET', 'POST'])

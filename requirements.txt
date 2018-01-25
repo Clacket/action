@@ -11,3 +11,4 @@ onetimepass~=1.0.1
 pyqrcode~=1.2.1
 shapely~=1.6.1
 boto3~=1.5.20
+sqlalchemy-utils~=0.32.21

@@ -21,15 +21,4 @@ $('.side-bar .btn').on('selectToggle', function () {
 
 $(function () {
 	$('.side-bar .btn').first().click();
-
-	$('.recent-grid').each(function () {
-		var selector = $(this);
-		$.ajax({
-			url: selector.data('href'),
-			method: 'GET',
-			success: function (data) {
-				selector.html(data);
-			}
-		});
-	});
 });

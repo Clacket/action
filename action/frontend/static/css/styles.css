@@ -8,6 +8,7 @@ html {
     overflow-x: hidden; 
 }
 
+
 footer {
 	position: absolute;
 	bottom: 0;
@@ -110,5 +111,42 @@ footer:hover{
 }
 
 #radius-box {
+	margin-bottom: 1em;
+}
+
+
+.movie-card  {
+	background-color: rgba(255,255,255,0.05);
+	border-radius: 0.2em;
+	border: 1px solid rgba(240,152,25,0.2);
+	transition-duration: 0.3s;
+	transition-property: border-color;
+	height: 100%;
+}
+
+.movie-card .poster {
+	width: 100%;
+	border-radius: 1em 0px;
+	margin-bottom: 1em;
+}
+
+.movie-card a .card-title {
+	color: white;
+}
+
+.movie-card a:hover {
+	text-decoration: none;
+}
+
+.movie-card a .card-title:hover {
+	color:  #FF512F;
+}
+
+
+.movie-card:hover {
+	border-color: rgba(240,152,25,1);
+}
+
+.margin-bottom {
 	margin-bottom: 1em;
 }

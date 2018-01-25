@@ -8,6 +8,9 @@ from flask_migrate import Migrate
 from shapely.geometry import Point
 from shapely import wkb
 from uuid import uuid4
+from sqlalchemy import func
+from sqlalchemy_utils import aggregated
+
 
 import geoalchemy2 as ga
 import onetimepass
@@ -208,6 +211,10 @@ class Movie(db.Model):
         self.title = kwargs.get('title')
         self.year = kwargs.get('year')
         self.description = kwargs.get('description')
+
+    @aggregated('ratings', db.Column(db.Float))
+    def avg_rating(self):
+        return func.avg(Rating.value)
 
     @property
     def serialize(self):

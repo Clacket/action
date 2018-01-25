@@ -3,14 +3,24 @@
 <div class="row">
 	<div class="col-xs-12">
 		<h2>Browse</h2>
+		<h2><small>Recently Updated</small></h2>
 	</div>
+</div>
+<div class="recent-grid" data-href="{{ url_for('frontend.recent_movies', limit=12) }}">
+	<h5 class="spinner">
+		<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+		<span class="sr-only">Loading...</span>
+	</h5>
 </div>
 <div class="row">
 	<div class="col-xs-12">
-		{% if movies | length == 0 %}
-		<p>No movies in our databases yet! More soon.</p>
-		{% else %}
-		{% endif %}
+		<h2><small>Most Popular</small></h2>
 	</div>
+</div>
+<div class="recent-grid" data-href="{{ url_for('frontend.popular_movies', limit=8) }}">
+	<h5 class="spinner">
+		<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+		<span class="sr-only">Loading...</span>
+	</h5>
 </div>
 {% endblock %}
