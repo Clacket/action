@@ -98,14 +98,17 @@ footer:hover{
 }
 
 #map {
-	width: 97vw;
+	width: 100%;
     min-height: 100vh;
     overflow: hidden;
     border-radius: 1em;
-    margin-top: 1em;
     margin-bottom: 1em;
 }
 
 .content .row{
 	padding: 1em;
+}
+
+#radius-box {
+	margin-bottom: 1em;
 }

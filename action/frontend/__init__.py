@@ -25,7 +25,8 @@ def cinemas():
 
 @frontend.route('/browse')
 def browse():
-    return render_template('frontend_browse.html')
+    movies = Movie.query.order_by(Movie.last_modified.desc()).all()
+    return render_template('frontend_browse.html', movies=movies)
 
 
 @frontend.route('/profile')

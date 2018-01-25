@@ -12,10 +12,11 @@ map.addControl(new mapboxgl.NavigationControl());
 
 var user_marker = new mapboxgl.Marker();
 
-
-map.on("load", function () {	
+function refresh() {	
+	console.log('here!');
 	navigator.geolocation.getCurrentPosition(function(pos) {
-		getCinemas(pos, 5, function (cinemas) {
+		var value = $('#radius-box').val();
+		getCinemas(pos, value, function (cinemas) {
 			var center = [ pos.coords.longitude, pos.coords.latitude ];
 			map.setCenter(center);
 			map.addSource("polygon", createGeoJSONCircle(center, 5));
@@ -101,7 +102,9 @@ map.on("load", function () {
 		    });
 		});
 	});
-});
+}
+
+map.on("load", refresh);
 
 
 // src: https://stackoverflow.com/a/39006388
@@ -175,3 +178,5 @@ var getCinemas = function (pos, radiusInKm, callback) {
 		}
 	});
 }
+
+$('#radius-box').change(refresh);

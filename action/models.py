@@ -31,6 +31,9 @@ class User(db.Model):
     favorites = db.relationship(
         'Movie', secondary='favorite',
         back_populates='favorited_by', lazy='dynamic')
+    ratings = db.relationship(
+        'Rating', backref='user', lazy='dynamic',
+        cascade='save-update, merge, delete')
 
     def __init__(self, **kwargs):
         self.username = self.check_unique(
@@ -196,6 +199,9 @@ class Movie(db.Model):
         back_populates='favorites', lazy='dynamic')
     pictures = db.relationship(
         'Picture', backref='movie', lazy='dynamic',
+        cascade='save-update, merge, delete')
+    ratings = db.relationship(
+        'Rating', backref='movie', lazy='dynamic',
         cascade='save-update, merge, delete')
 
     def __init__(self, **kwargs):
