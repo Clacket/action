@@ -13,12 +13,13 @@ map.addControl(new mapboxgl.NavigationControl());
 var user_marker = new mapboxgl.Marker();
 
 function init() {	
+	console.log("Initalizing...");
 	navigator.geolocation.getCurrentPosition(function(pos) {
-		var value = $('#radius-box').val();
+		var value = Number($('#radius-box').val());
 		getCinemas(pos, value, function (cinemas) {
 			var center = [ pos.coords.longitude, pos.coords.latitude ];
 			map.setCenter(center);
-			map.addSource("polygon", createGeoJSONCircle(center, 5));
+			map.addSource("polygon", createGeoJSONCircle(center, value));
 			map.addLayer({
 				"id": "polygon",
 				"type": "fill",
@@ -127,13 +128,13 @@ var createGeoJSONCircle = function(center, radiusInKm, points) {
 
 function refresh () {
 	navigator.geolocation.getCurrentPosition(function(pos) {
-		var value = $('#radius-box').val();
+		var value = Number($('#radius-box').val());
 		getCinemas(pos, value, function (cinemas) {
 			var center = [ pos.coords.longitude, pos.coords.latitude ];
 			map.setCenter(center);
 			map.getSource("polygon").setData(createGeoJSONCircle(center, value));
 			map.getSource("user_position").setData(getPositionGeo(pos));
-			map.getSouce("cinemas").setData(getCinemaGeo(cinemas));
+			map.getSource("cinemas").setData(getCinemaGeo(cinemas));
 		});
 	});
 }
