@@ -14,11 +14,11 @@ var user_marker = new mapboxgl.Marker();
 
 function init() {	
 	navigator.geolocation.getCurrentPosition(function(pos) {
-		var value = Number($('#radius-box').val());
-		getCinemas(pos, value, function (cinemas) {
+		//var value = Number($('#radius-box').val());
+		getCinemas(pos, 5, function (cinemas) {
 			var center = [ pos.coords.longitude, pos.coords.latitude ];
 			map.setCenter(center);
-			map.addSource("polygon", createGeoJSONCircle(center, value));
+			map.addSource("polygon", createGeoJSONCircle(center, 5));
 			map.addLayer({
 				"id": "polygon",
 				"type": "fill",
