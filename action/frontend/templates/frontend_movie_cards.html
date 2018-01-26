@@ -1,11 +1,9 @@
-{% from 'frontend_macros.html' import rating_stars, movie_card %}
+{% from 'frontend_macros.html' import rating_stars, movie_cards %}
 <div class="row">
 {% if movies | length == 0 %}
 <div class="col-xs-12 no-movies">
 <p>{{ ifempty }}</p>
 {% else %}
-{% for movie in movies %}
-	{{ movie_card(movie) }}
-{% endfor %}
+{{ movie_cards(movies) }}
 </div>
 {% endif %}

@@ -23,6 +23,9 @@ footer:hover{
 	opacity: 1;
 }
 
+.fav-this, .unfav-this {
+	font-size: 1.5em;
+}
 
 .search-box {
 	padding: 1em;

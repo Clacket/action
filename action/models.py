@@ -118,7 +118,7 @@ class Rating(db.Model):
     def __init__(self, **kwargs):
         self.user_id = kwargs.get('user_id')
         self.movie_id = kwargs.get('movie_id')
-        self.value = int(kwargs.get('value'))
+        self.value = kwargs.get('value')
 
 
 class Showing(db.Model):
@@ -206,6 +206,9 @@ class Movie(db.Model):
     ratings = db.relationship(
         'Rating', backref='movie', lazy='dynamic',
         cascade='save-update, merge, delete')
+    favorites = db.relationship(
+        'Favorite', backref='movie', lazy='dynamic',
+        cascade='save-update, merge, delete')
 
     def __init__(self, **kwargs):
         self.title = kwargs.get('title')
@@ -215,6 +218,14 @@ class Movie(db.Model):
     @aggregated('ratings', db.Column(db.Float))
     def avg_rating(self):
         return func.avg(Rating.value)
+
+    @aggregated('favorites', db.Column(db.Integer, default=0))
+    def favorite_count(self):
+        return func.count('1')
+
+    @aggregated('ratings', db.Column(db.Integer, default=0))
+    def rating_count(self):
+        return func.count('1')
 
     @property
     def serialize(self):

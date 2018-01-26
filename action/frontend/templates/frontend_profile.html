@@ -1,8 +1,19 @@
 {% extends 'frontend_layout.html' %}
 {% block content %}
 <div class="row">
-	<div class="col-xs-12 col-md-6 col-centered">
+	<div class="col-xs-12">
 		<h2>Profile for {{ user.username }}</h2>
 	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12">
+		<h2><small><i class="fa fa-heart"></i> Favorites</small></h2>
+	</div>
+</div>
+<div class="recent-grid" data-href="{{ url_for('frontend.fav_movies', limit=40) }}">
+	<h5 class="spinner">
+		<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+		<span class="sr-only">Loading...</span>
+	</h5>
 </div>
 {% endblock %}

@@ -1,11 +1,14 @@
 from flask import (
     Blueprint, render_template, request, redirect, url_for, session)
 
+from sqlalchemy import exc
+
 from action.utils import (
     authenticate, anonymous_only,
     login_user, LoginException, logout_user, redirect_back)
 
-from action.models import DBException, User, db, Movie, Recommendation
+from action.models import (
+    DBException, User, db, Movie, Recommendation, Favorite, Rating)
 
 frontend = Blueprint(
     'frontend', __name__, static_folder='static',
@@ -39,8 +42,9 @@ def recent_movies(limit):
 
 @frontend.route('/movies/popular/<int:limit>')
 def popular_movies(limit):
-    movies = Movie.query.order_by(Movie.avg_rating.desc()).all()
-    ifempty = 'No movies in our database yet! Check back later.'
+    movies = Movie.query.join(Rating).outerjoin(Favorite).order_by(
+        Movie.avg_rating.desc(), Movie.favorite_count.desc()).all()
+    ifempty = 'No rated movies in our database yet! Check back later.'
     return render_template(
         'frontend_movie_cards.html', movies=movies, ifempty=ifempty)
 
@@ -65,6 +69,63 @@ def movie(movie_id):
         return 'Movie not found.', 404
     else:
         return render_template('frontend_movie.html', movie=movie)
+
+
+@frontend.route('/movie/<int:movie_id>/favorite/add')
+@authenticate
+def fav_movie(movie_id):
+    user_id = session['userId']
+    try:
+        favorite = Favorite(user_id=user_id, movie_id=movie_id)
+        db.session.add(favorite)
+        db.session.commit()
+        return 'Success!', 200
+    except exc.IntegrityError:
+        return 'Cannot make this join.', 400
+
+
+@frontend.route('/movie/<int:movie_id>/favorite/remove')
+@authenticate
+def unfav_movie(movie_id):
+    user_id = session['userId']
+    favorite = Favorite.query.filter_by(
+        user_id=user_id, movie_id=movie_id).first()
+    db.session.delete(favorite)
+    db.session.commit()
+    return 'Success!', 200
+
+
+@frontend.route('/movies/favorites/<int:limit>')
+@authenticate
+def fav_movies(limit):
+    user_id = session['userId']
+    movies = Movie.query.join(Favorite).filter(
+        Favorite.user_id == user_id).order_by(Favorite.created.desc()).all()
+    return render_template(
+        'frontend_movie_cards.html', movies=movies,
+        ifempty='No favorite movies yet!')
+
+
+@frontend.route('/movie/<int:movie_id>/rate/<int:value>')
+@authenticate
+def rate_movie(movie_id, value):
+    user_id = session['userId']
+    if value > 5:
+        value = 5
+    elif value < 1:
+        value = 1
+    try:
+        old_rating = Rating.query.filter_by(
+            user_id=user_id, movie_id=movie_id).first()
+        if old_rating is not None:
+            old_rating.value = value
+        else:
+            rating = Rating(user_id=user_id, movie_id=movie_id, value=value)
+            db.session.add(rating)
+        db.session.commit()
+        return 'Success!', 200
+    except exc.IntegrityError:
+        return 'Could not rate this movie.', 400
 
 
 @frontend.route('/profile')

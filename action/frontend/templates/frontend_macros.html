@@ -9,6 +9,26 @@
 </div>
 {% endmacro %}
 
+{% macro movie_cards(movies) %}
+  {% for movie in movies %}
+    {{ movie_card(movie) }}
+  {% endfor %}
+  <script src="{{ url_for('frontend.static', filename='js/cards.js') }}"></script>
+  <script src="{{ url_for('frontend.static', filename='js/movie.js') }}"></script>
+{% endmacro %}
+
+{% macro favorite_buttons(movie) %}
+ {% if movie.favorited_by.filter_by(id=session['userId']).count() == 0 %}
+  <span class="fav-this pointer" title="Add this movie to your favorites!">
+    <i class="fa fa-heart-o hover-icon action" data-action="{{ url_for('frontend.fav_movie', movie_id=movie.id) }}" data-hover="fa fa-heart"></i>
+  </span>
+  {% else %}
+  <span class="unfav-this pointer" title="Remove this movie from your favorites!">
+    <i class="fa fa-heart hover-icon action" data-action="{{ url_for('frontend.unfav_movie', movie_id=movie.id) }}" data-hover="fa fa-heart-o"></i>
+  </span>
+  {% endif %}
+{% endmacro %}
+
 {% macro movie_card(movie) %}
 <div class="margin-bottom col-xs-12 col-md-3">
 	<!--img class="card-img-top" alt="Movie Poster"-->
@@ -23,6 +43,11 @@
     	</a>
     	<span class="card-rating">{{ rating_stars(movie.avg_rating) }} {% if movie.avg_rating is none %}N/A{% else %}{{ movie.avg_rating | round(2, 'common') }}{% endif %}</span>
     	<p class="card-text">{{ movie.description }}</p>
+      {% if 'userId' in session %}
+      <p class="pin-me-down pin-me-right">
+       {{ favorite_buttons(movie) }}
+      </p>
+      {% endif %}
   </div>
 </div>
 {% endmacro %}
