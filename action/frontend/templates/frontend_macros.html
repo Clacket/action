@@ -10,9 +10,11 @@
 {% endmacro %}
 
 {% macro movie_cards(movies) %}
+<div class="row">
   {% for movie in movies %}
     {{ movie_card(movie) }}
   {% endfor %}
+</div>
   <script src="{{ url_for('frontend.static', filename='js/cards.js') }}"></script>
   <script src="{{ url_for('frontend.static', filename='js/movie.js') }}"></script>
 {% endmacro %}
@@ -29,6 +31,10 @@
   {% endif %}
 {% endmacro %}
 
+{% macro avg_ratings(movie) %}
+{{ rating_stars(movie.avg_rating) }} {% if movie.avg_rating is none %}N/A{% else %}{{ movie.avg_rating | round(2, 'common') }}{% endif %}
+{% endmacro %}
+
 {% macro movie_card(movie) %}
 <div class="margin-bottom col-xs-12 col-md-3">
 	<!--img class="card-img-top" alt="Movie Poster"-->
@@ -41,7 +47,7 @@
     	<a href="{{ url_for('frontend.movie', movie_id=movie.id) }}">
     		<h4 class="card-title" data-href=>{{ movie.title }} <small>{{ movie.year }}</small></h4>
     	</a>
-    	<span class="card-rating">{{ rating_stars(movie.avg_rating) }} {% if movie.avg_rating is none %}N/A{% else %}{{ movie.avg_rating | round(2, 'common') }}{% endif %}</span>
+    	<span class="card-rating">{{ avg_ratings(movie) }}</span>
     	<p class="card-text">{{ movie.description }}</p>
       {% if 'userId' in session %}
       <p class="pin-me-down pin-me-right">
@@ -73,5 +79,4 @@
   {% for x in range(empty) %}
     <i class="fa fa-star-o"></i>
   {% endfor %}
-
 {% endmacro %}

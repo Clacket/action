@@ -82,12 +82,12 @@ body {
     font-weight: bold;
 }
 
-h1, h2, h3, h4 {
+h1, h2, h3, h4, h5 {
 	text-transform: uppercase;
 	letter-spacing: 0.15em;
 }
 
-h1 small, h2 small, h3 small, h4 small {
+h1 small, h2 small, h3 small, h4 small, h5 small {
 	opacity: 0.5;
 }
 

@@ -9,6 +9,19 @@ html {
 }
 
 
+.movie-rating {
+	font-size: 1em;
+}
+
+.movie-actions {
+	font-size: 1.5em;
+}
+
+
+.fa-heart, .fa-heart-o {
+	color: #ee5253;
+}
+
 footer {
 	position: absolute;
 	bottom: 0;
@@ -26,6 +39,33 @@ footer:hover{
 .fav-this, .unfav-this {
 	font-size: 1.5em;
 }
+
+
+.movie-actions .fav-this, .movie-actions .unfav-this {
+	font-size: 1em;
+}
+
+.movie-actions {
+	background-color: rgba(255,255,255,0.1);
+    padding: 0.5em;
+    border-radius: 0.2em;
+    font-size: 1.7em;
+}
+
+.movie-actions .stars {
+	color: #e1b12c;
+}
+
+.movie-poster {
+	width: 100%;
+	border-radius: 0.2em;
+}
+
+.movie-faves .fa-heart {
+	color: white !important;
+	font-size: 0.8em;
+}
+
 
 .search-box {
 	padding: 1em;

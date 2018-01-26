@@ -1,8 +1,63 @@
 {% extends 'frontend_layout.html' %}
+{% from 'frontend_macros.html' import avg_ratings, favorite_buttons %}
 {% block content %}
 <div class="row">
-	<div class="col-xs-12">
-		<h2>{{ movie.title }}</h2>
+	<div class="col-xs-12 col-md-6 col-centered">
+		<h2>{{ movie.title }} <small>{{ movie.year }}</small></h2>
+		<h5 title="Genres"><small>{% for genre in movie.genres %}{{ genre.value }}{% if not loop.last %}, {% endif %}{% endfor %}</small></h5>
+		<div class="movie-stats">
+			<span class="movie-rating" title="Average Rating">{{ avg_ratings(movie) }}</span>
+			<span class="float-right movie-faves" title="Total Favorites">{{ movie.favorite_count}} <i class="fa fa-heart"></i></span>
+		</div>
+		{% if 'userId' in session %}
+		<h2><small>Your Rating</small></h2>
+		<div class="movie-actions" title="Rate/Favorite this movie!">{{ rate_this(movie) }}  <span class="float-right">{{ favorite_buttons(movie) }}</span></div>
+		{% endif %}
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12 col-md-6 col-centered">
+		{% for picture in movie.pictures %}
+			{% if loop.last %}
+				<img class="movie-poster" src="{{ picture.url }}">
+			{% endif %}
+		{% endfor %}
+		{% if movie.description | length > 0 %}
+		<br>
+		<h2><small>Description</small></h2>
+		<p>{{ movie.description }}</p>
+		{% endif %}
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12 col-md-6 col-centered">
+		<h2><small>Watch it!</small></h2>
+		{% if movie.showings.count() == 0 %}
+		<p>No showings for this movie at the moment!</p>
+		{% endif %}
 	</div>
 </div>
 {% endblock %}
+{% block scripts %}
+  <script src="{{ url_for('frontend.static', filename='js/movie.js') }}"></script>
+{% endblock %}
+
+{% macro rate_this(movie) %}
+	<span class="stars">
+	{% set curr = movie.ratings.filter_by(user_id=session['userId']).first() %}
+	{% if curr is not none %}
+		{% set curr_rating = curr.value %}
+	{% else %}
+		{% set curr_rating = 0 %}
+	{% endif %}
+	{% set curr = movie.ratings.filter_by(user_id=session['userId']).first() %}
+	{% for i in [1,2,3,4,5] %}
+		{% if i <= curr_rating %}
+		<i class="fa fa-star star-action pointer" data-action="{{ url_for('frontend.rate_movie', movie_id=movie.id, value=i) }}" data-i="{{ i }}"></i>
+		{% else %}
+		<i class="fa fa-star-o star-action pointer" data-action="{{ url_for('frontend.rate_movie', movie_id=movie.id, value=i) }}" data-i="{{ i }}"></i>
+		{% endif %}
+	{% endfor %}
+	{% if curr is not none %}{{ curr.value }}{% endif %}
+	</span>
+{% endmacro %}
