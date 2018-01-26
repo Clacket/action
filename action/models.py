@@ -139,9 +139,12 @@ class Showing(db.Model):
         onupdate=datetime.datetime.utcnow)
     geometry = db.Column(ga.Geography('POINT', srid=4326,
                                       spatial_index=False))
+    showings = db.relationship(
+        'MovieShowing', backref='cinema', lazy='dynamic',
+        cascade='save-update, merge, delete')
     movies = db.relationship(
-        'Movie', secondary='movie_showing',
-        back_populates='showings', lazy='dynamic')
+        'Movie', secondary='showing_movie',
+        back_populates='showing_cinemas', lazy='dynamic')
 
     def __init__(self, **kwargs):
         self.type = kwargs.get('type')
@@ -170,6 +173,7 @@ class Showing(db.Model):
         point = wkb.loads(bytes(self.geometry.data))
         lng, lat = point.x, point.y
         return dict(
+            id=self.id,
             name=self.name,
             phone=self.phone,
             website=self.website,
@@ -191,8 +195,8 @@ class Movie(db.Model):
     last_modified = db.Column(
         db.DateTime, default=datetime.datetime.utcnow,
         onupdate=datetime.datetime.utcnow)
-    showings = db.relationship(
-        'Showing', secondary='movie_showing',
+    showing_cinemas = db.relationship(
+        'Showing', secondary='showing_movie',
         back_populates='movies', lazy='dynamic')
     recommended_to = db.relationship(
         'User', secondary='recommendation',
@@ -211,6 +215,9 @@ class Movie(db.Model):
         cascade='save-update, merge, delete')
     genres = db.relationship(
         'Genre', backref='movie', lazy='dynamic',
+        cascade='save-update, merge, delete')
+    showings = db.relationship(
+        'MovieShowing', backref='movie', lazy='dynamic',
         cascade='save-update, merge, delete')
 
     def __init__(self, **kwargs):
@@ -249,14 +256,37 @@ class Movie(db.Model):
 class MovieShowing(db.Model):
     """Relationship between movie and showing."""
 
-    __tablename__ = 'movie_showing'
+    __tablename__ = 'showing_movie'
 
+    id = db.Column(db.BigInteger, autoincrement=True, primary_key=True)
     movie_id = db.Column(
-        db.BigInteger, db.ForeignKey('movie.id'), primary_key=True)
+        db.BigInteger, db.ForeignKey('movie.id'), nullable=False)
     showing_id = db.Column(
-        db.BigInteger, db.ForeignKey('showing.id'), primary_key=True)
+        db.BigInteger, db.ForeignKey('showing.id'), nullable=False)
     time_from = db.Column(db.DateTime)
     time_to = db.Column(db.DateTime)
+    description = db.Column(db.String)
+
+    def __init__(self, **kwargs):
+        self.movie_id = kwargs.get('movie_id')
+        self.showing_id = kwargs.get('showing_id')
+        self.time_from = kwargs.get('time_from')
+        self.time_to = kwargs.get('time_to')
+        self.description = kwargs.get('description')
+
+    @classmethod
+    def get_kwargs(self, request):
+        movie_id = int(request.form.get('chosen_movie_id'))
+        showing_id = int(request.form.get('chosen_cinema_id'))
+        time_from = datetime.datetime.strptime(
+            request.form.get('date_from'), '%Y-%m-%dT%H:%M')
+        time_to = datetime.datetime.strptime(
+            request.form.get('date_to'), '%Y-%m-%dT%H:%M')
+        description = request.form.get('description')
+        return dict(
+            movie_id=movie_id, showing_id=showing_id,
+            time_from=time_from, time_to=time_to,
+            description=description)
 
 
 class Genre(db.Model):

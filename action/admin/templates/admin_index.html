@@ -1,6 +1,6 @@
 {% extends 'admin_layout.html' %}
 {% from 'global_macros.html' import modal %}
-{% from 'admin_macros.html' import movie_form, cinema_form %}
+{% from 'admin_macros.html' import movie_form, cinema_form, showing_form %}
 {% block head %}
 <link rel='stylesheet' href="{{ url_for('static', filename='css/typeahead.css') }}" type='text/css' />
 {% endblock %}
@@ -23,7 +23,7 @@
 	<div class="side-bar flex-container flex-col col-xs-4 col-md-2 text-right">
 		<button class="btn btn-transparent" data-select="movie-div">Movies</button>
 		<button class="btn btn-transparent" data-select="cinema-div">Cinemas</button>
-		<button class="btn btn-transparent" data-select="user-div">Users</button>
+		<button class="btn btn-transparent" data-select="showing-div">Showings</button>
 		<button class="btn btn-transparent" data-select="analytics-div">Analytics</button>
 		<button class="btn btn-transparent" data-select="complaints-div">Complaints</button>
 	</div>
@@ -70,8 +70,26 @@
 				</div>
 			</div>
 		</div>
-		<div id="user-div" class="content">
-			<h3>Control users here</h3>
+		<div id="showing-div" class="content">
+			<div class="flex-container flex-row">
+				<button class="btn btn-blue" data-toggle="modal" data-target="#addShowing">
+					<small><i class="fa fa-plus"></i></small> New Showing
+				</button>
+				{% call modal('addShowing', 'New Showing') %}
+					{% with endpoint = url_for('admin.add_showing') %}
+						{{ showing_form(endpoint) }}
+					{% endwith %}
+				{% endcall %}
+			</div>
+			<div>
+				<h3>Recently Created</h3>
+				<div class="recent-grid" data-href="{{ url_for('admin.recent_showings', limit=10) }}">
+					<h2 class="spinner">
+						<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+						<span class="sr-only">Loading...</span>
+					</h2>
+				</div>
+			</div>
 		</div>
 		<div id="analytics-div" class="content">
 			<h3>See analytics here</h3>

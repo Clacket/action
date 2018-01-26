@@ -1,17 +1,18 @@
 from io import BytesIO
 import datetime
 import pyqrcode
-from sqlalchemy import desc
+from sqlalchemy import desc, exc
 from flask import (
     Blueprint, render_template, request, redirect, url_for,
-    session, flash)
+    session, flash, jsonify)
 from action.admin.utils import (
     authenticate, anonymous_only,
     activated_only, unactivated_only,
     login_admin, LoginException, logout_admin, login_admin_token)
 from action.utils import redirect_back, upload_picture, UploadException
 from action.models import (
-    Admin, AdminInvite, Movie, Showing, Picture, DBException, db, Genre)
+    Admin, AdminInvite, Movie, Showing, Picture, DBException, db, Genre,
+    MovieShowing)
 
 
 admin = Blueprint(
@@ -227,6 +228,29 @@ def add_cinema():
     return redirect(url_for('admin.index'))
 
 
+@admin.route('/showing/new', methods=['POST'])
+@authenticate
+def add_showing():
+    kwargs = MovieShowing.get_kwargs(request)
+    try:
+        showing = MovieShowing(**kwargs)
+        db.session.add(showing)
+        db.session.commit()
+        flash('Added new showing!')
+    except exc.IntegrityError:
+        flash('Could not add this showing! '
+              'Make sure all the info makes sense.')
+    return redirect(url_for('admin.index'))
+
+
+@admin.route('/showings/recent/<int:limit>')
+@authenticate
+def recent_showings(limit):
+    showings = MovieShowing.query.order_by(
+        MovieShowing.id.desc()).limit(limit).all()
+    return render_template('admin_showing_cards.html', showings=showings)
+
+
 @admin.route('/cinemas/recent/<int:limit>')
 @authenticate
 def recent_cinemas(limit):
@@ -246,3 +270,31 @@ def delete_cinema(cinema_id):
     db.session.commit()
     flash('Cinema {0} deleted!'.format(name))
     return redirect(url_for('admin.index'))
+
+
+@admin.route('/showing/<int:showing_id>/delete', methods=['POST'])
+@authenticate
+def delete_showing(showing_id):
+    showing = MovieShowing.query.filter_by(id=showing_id).first()
+    db.session.delete(showing)
+    db.session.commit()
+    flash('Showing deleted!')
+    return redirect(url_for('admin.index'))
+
+
+@admin.route('/cinemas/query/<query_string>')
+@authenticate
+def query_cinemas(query_string):
+    final = '%{0}%'.format(query_string)
+    cinemas = Showing.query.filter(Showing.name.ilike(final)).all()
+    cinemas_list = [c.serialize for c in cinemas]
+    return jsonify(values=cinemas_list)
+
+
+@admin.route('/movies/query/<query_string>')
+@authenticate
+def query_movies(query_string):
+    final = '%{0}%'.format(query_string)
+    movies = Movie.query.filter(Movie.title.ilike(final)).all()
+    movies_list = [m.serialize for m in movies]
+    return jsonify(values=movies_list)
