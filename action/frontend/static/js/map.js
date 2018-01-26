@@ -12,8 +12,7 @@ map.addControl(new mapboxgl.NavigationControl());
 
 var user_marker = new mapboxgl.Marker();
 
-function refresh() {	
-	console.log('here!');
+function init() {	
 	navigator.geolocation.getCurrentPosition(function(pos) {
 		var value = $('#radius-box').val();
 		getCinemas(pos, value, function (cinemas) {
@@ -30,27 +29,12 @@ function refresh() {
 				    "fill-opacity": 0.4
 				}
 			});
-			var data = {
-			   "type": "FeatureCollection",
-			   "features": [{
-			       "type": "Feature",
-			       "properties": {
-			      	  "title": "You are here",
-			      	  "icon": "circle"
-			        },
-			       "geometry": {
-			          "type": "Point",
-			          "coordinates": center
-			      	}
-			  	}]
-			}
+			var data = getPositionGeo(pos);
+			map.addSource("user_position", data);
 			map.addLayer({
 				"id": "user_position",
 				"type": "symbol",
-				"source": {
-					"type": "geojson",
-					"data": data
-				},
+				"source": "user_position",
 				"layout": {
 				    "icon-image": "{icon}-15",
 				    "text-field": "{title}",
@@ -60,18 +44,12 @@ function refresh() {
 				}
 			});
 
-			var cinema_data = {
-				"type": "FeatureCollection",
-				"features": cinemas
-			}
-
+			var cinema_data = getCinemaGeo(cinemas);
+			map.addSource("cinemas", cinema_data)
 			map.addLayer({
 				"id": "cinemas",
 				"type": "symbol",
-				"source": {
-					"type": "geojson",
-					"data": cinema_data
-				},
+				"source": "cinemas",
 				"layout": {
 				    "icon-image": "{icon}-15",
 				    "text-field": "{title}",
@@ -104,7 +82,7 @@ function refresh() {
 	});
 }
 
-map.on("load", refresh);
+map.on("load", init);
 
 
 // src: https://stackoverflow.com/a/39006388
@@ -147,6 +125,49 @@ var createGeoJSONCircle = function(center, radiusInKm, points) {
     };
 };
 
+function refresh () {
+	navigator.geolocation.getCurrentPosition(function(pos) {
+		var value = $('#radius-box').val();
+		getCinemas(pos, value, function (cinemas) {
+			var center = [ pos.coords.longitude, pos.coords.latitude ];
+			map.setCenter(center);
+			map.getSource("polygon").setData(createGeoJSONCircle(center, value));
+			map.getSource("user_position").setData(getPositionGeo(pos));
+			map.getSouce("cinemas").setData(getCinemaGeo(cinemas));
+		});
+	});
+}
+
+function getPositionGeo(pos) {
+	var center = [ pos.coords.longitude, pos.coords.latitude ];
+	return {
+			"type": "geojson",
+			"data": {
+			   "type": "FeatureCollection",
+			   "features": [{
+			       "type": "Feature",
+			       "properties": {
+			      	  "title": "You are here",
+			      	  "icon": "circle"
+			        },
+			       "geometry": {
+			          "type": "Point",
+			          "coordinates": center
+			      	}
+			  	}]
+			}
+		}
+}
+
+function getCinemaGeo(cinemas) {
+	return {
+		"type": "geojson",
+		"data": {
+			"type": "FeatureCollection",
+			"features": cinemas
+		}
+	}
+}
 
 var getCinemas = function (pos, radiusInKm, callback) {
 	$.ajax({
