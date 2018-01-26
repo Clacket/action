@@ -191,6 +191,6 @@ def logout():
 def search():
     query = request.args.get('query', '')
     words = query.split(' ')
-    like = '%' + '%'.join([w for w in words]) + '%'
+    like = '%' + '%'.join([w for w in words if w != ' ']) + '%'
     movies = Movie.query.filter(Movie.title.ilike(like)).all()
     return render_template('frontend_results.html', movies=movies, query=query)

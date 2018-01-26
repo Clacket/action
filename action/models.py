@@ -209,6 +209,9 @@ class Movie(db.Model):
     favorites = db.relationship(
         'Favorite', backref='movie', lazy='dynamic',
         cascade='save-update, merge, delete')
+    genres = db.relationship(
+        'Genre', backref='movie', lazy='dynamic',
+        cascade='save-update, merge, delete')
 
     def __init__(self, **kwargs):
         self.title = kwargs.get('title')
@@ -254,6 +257,32 @@ class MovieShowing(db.Model):
         db.BigInteger, db.ForeignKey('showing.id'), primary_key=True)
     time_from = db.Column(db.DateTime)
     time_to = db.Column(db.DateTime)
+
+
+class Genre(db.Model):
+    """List of genres for every movie."""
+
+    __tablename__ = 'genre'
+
+    id = db.Column(db.BigInteger, autoincrement=True, primary_key=True)
+    movie_id = db.Column(db.BigInteger, db.ForeignKey('movie.id'))
+    value = db.Column(db.String, nullable=False)
+    created = db.Column(
+        db.DateTime, nullable=False, default=datetime.datetime.utcnow)
+
+    def __init__(self, **kwargs):
+        self.movie_id = kwargs.get('movie_id')
+        prepped = self.prep(kwargs.get('value'))
+        if len(prepped) > 0:
+            self.value = prepped
+        else:
+            raise DBException('Empty value.')
+
+    @classmethod
+    def prep(cls, val):
+        genre = val.strip().lower()
+        words = genre.split(' ')
+        return ' '.join([w for w in words if w != ' ' and w != ''])
 
 
 class Picture(db.Model):

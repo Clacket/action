@@ -11,13 +11,16 @@
 		<input type="text" class="form-control" name="title" placeholder="Title" {% if movie is not none %} value="{{ movie.title }}" {% endif %} required>
 	</div>
 	<div class="form-group">
-		<input type="number" class="form-control" name="year" placeholder="Year of Release" min="1900" {% if movie is not none %} value="{{ movie.year }}" {% endif %} required>
+		<input type="number" class="form-control" name="year" placeholder="Year of Release" min="1900" {% if movie is not none %} value="{{ movie.year }}" {% endif %} title="Year of release" required>
 	</div>
 	<div class="form-group">
 		<input type="file" class="form-control" name="poster">
 	</div>
 	<div class="form-group">
-		<textarea name="description" class="form-control" placeholder="Description">{% if movie is not none %} {{ movie.description }} {% endif %}</textarea>
+		<textarea name="description" class="form-control" placeholder="Description" title="Description">{% if movie is not none %}{{ movie.description }}{% endif %}</textarea>
+	</div>
+	<div class="form-group">
+		<textarea name="genres" class="form-control" placeholder="Genres, comma-separated." title="Genres, comma-separated">{% if movie is not none %}{% for genre in movie.genres %}{{ genre.value }},{% endfor %}{% endif %}</textarea>
 	</div>
 	<input type="submit" class="btn btn-submit" value="Submit">
 </form>

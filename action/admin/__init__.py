@@ -11,7 +11,7 @@ from action.admin.utils import (
     login_admin, LoginException, logout_admin, login_admin_token)
 from action.utils import redirect_back, upload_picture, UploadException
 from action.models import (
-    Admin, AdminInvite, Movie, Showing, Picture, DBException, db)
+    Admin, AdminInvite, Movie, Showing, Picture, DBException, db, Genre)
 
 
 admin = Blueprint(
@@ -146,9 +146,15 @@ def add_movie():
     kwargs = Movie.get_kwargs(request)
     movie = Movie(**kwargs)
     db.session.add(movie)
+    db.session.flush()
+    genres = request.form.get('genres', '')
+    if genres != '':
+        genres = genres.split(',')
+        for genre_string in genres:
+            genre = Genre(movie_id=movie.id, value=genre_string)
+            db.session.add(genre)
     if 'poster' in request.files and request.files['poster'].filename != '':
         try:
-            db.session.flush()
             url = upload_picture(request.files['poster'])
             picture = Picture(movie_id=movie.id, url=url)
             db.session.add(picture)
@@ -170,9 +176,18 @@ def edit_movie(movie_id):
     movie = Movie.query.filter_by(id=movie_id).first()
     if movie is None:
         return 'Movie not found.', 404
+    Genre.query.filter_by(movie_id=movie_id).delete()
+    genres = request.form.get('genres', '')
+    if genres != '':
+        genres = genres.split(',')
+        for genre_string in genres:
+            try:
+                genre = Genre(movie_id=movie.id, value=genre_string)
+                db.session.add(genre)
+            except DBException:  # it won't add anything, so just continue
+                pass
     if 'poster' in request.files and request.files['poster'].filename != '':
         try:
-            db.session.flush()
             url = upload_picture(request.files['poster'])
             picture = Picture(movie_id=movie.id, url=url)
             db.session.add(picture)
