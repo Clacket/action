@@ -13,7 +13,6 @@ map.addControl(new mapboxgl.NavigationControl());
 var user_marker = new mapboxgl.Marker();
 
 function init() {	
-	console.log("Initalizing...");
 	navigator.geolocation.getCurrentPosition(function(pos) {
 		var value = Number($('#radius-box').val());
 		getCinemas(pos, value, function (cinemas) {
@@ -132,9 +131,12 @@ function refresh () {
 		getCinemas(pos, value, function (cinemas) {
 			var center = [ pos.coords.longitude, pos.coords.latitude ];
 			map.setCenter(center);
-			map.getSource("polygon").setData(createGeoJSONCircle(center, value));
-			map.getSource("user_position").setData(getPositionGeo(pos));
-			map.getSource("cinemas").setData(getCinemaGeo(cinemas));
+			var circle = createGeoJSONCircle(center, value);
+			map.getSource("polygon").setData(circle);
+			var user = getPositionGeo(pos);
+			map.getSource("user_position").setData(user);
+			var cinemas = getCinemaGeo(cinemas);
+			map.getSource("cinemas").setData(cinemas);
 		});
 	});
 }
@@ -182,6 +184,7 @@ var getCinemas = function (pos, radiusInKm, callback) {
 		type: 'json',
 		success: function (json) {
 			var cinemas = [];
+			console.log(json);
 			for (var i = 0; i < json.cinemas.length; i++) {
 				cinemas.push({
 				    "type": "Feature",
