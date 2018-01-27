@@ -135,8 +135,10 @@ def logout():
 @admin.route('/movies/recent/<int:limit>')
 @authenticate
 def recent_movies(limit):
+    # movies = Movie.query.order_by(
+    #    desc(Movie.last_modified)).limit(limit).all()
     movies = Movie.query.order_by(
-        desc(Movie.last_modified)).limit(limit).all()
+        desc(Movie.last_modified)).all()
     return render_template('admin_movie_cards.html', movies=movies)
 
 
@@ -246,16 +248,20 @@ def add_showing():
 @admin.route('/showings/recent/<int:limit>')
 @authenticate
 def recent_showings(limit):
+    # showings = MovieShowing.query.order_by(
+    #    MovieShowing.id.desc()).limit(limit).all()
     showings = MovieShowing.query.order_by(
-        MovieShowing.id.desc()).limit(limit).all()
+        MovieShowing.id.desc()).all()
     return render_template('admin_showing_cards.html', showings=showings)
 
 
 @admin.route('/cinemas/recent/<int:limit>')
 @authenticate
 def recent_cinemas(limit):
+    # cinemas = Showing.query.filter_by(type='cinema').order_by(
+    #    desc(Showing.last_modified)).limit(limit).all()
     cinemas = Showing.query.filter_by(type='cinema').order_by(
-        desc(Showing.last_modified)).limit(limit).all()
+        desc(Showing.last_modified)).all()
     return render_template('admin_cinema_cards.html', cinemas=cinemas)
 
 
