@@ -30,16 +30,24 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-xs-12 col-md-6 col-centered">
+	<div class="col-xs-10 col-md-6 col-centered">
 		<h2><small>Watch it!</small></h2>
 		{% if movie.showings.count() == 0 %}
 		<p>No showings for this movie at the moment!</p>
+		{% else %}
+		<ul>
+		{% for showing in movie.showings | sort(attribute='time_to') %}
+			<li>{{ showing.cinema.name }} <h5><small>(until {{ showing.time_to.strftime('%d %b, %Y') }})</small></h5></li>
+		{% endfor %}
+		</ul>
+		<div id="map" data-endpoint="{{ url_for('api.nearby_showings', movie_id=movie.id) }}"></div>
 		{% endif %}
 	</div>
 </div>
 {% endblock %}
 {% block scripts %}
   <script src="{{ url_for('frontend.static', filename='js/movie.js') }}"></script>
+  <script src="{{ url_for('frontend.static', filename='js/map.js') }}"></script>
 {% endblock %}
 
 {% macro rate_this(movie) %}
