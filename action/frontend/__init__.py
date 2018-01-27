@@ -8,7 +8,7 @@ from action.utils import (
     login_user, LoginException, logout_user, redirect_back)
 
 from action.models import (
-    DBException, User, db, Movie, Recommendation, Favorite, Rating)
+    DBException, User, db, Movie, Favorite, Rating)
 
 frontend = Blueprint(
     'frontend', __name__, static_folder='static',
@@ -52,10 +52,15 @@ def popular_movies(limit):
 @frontend.route('/movies/recommended/<int:limit>')
 @authenticate
 def recommended_movies(limit):
+    """Simulated for now for the presentation."""
     user_id = session['userId']
-    movies = Movie.query.join(Recommendation).filter(
-        Recommendation.user_id == user_id).order_by(
-        Recommendation.created.desc(), Recommendation.predicted.desc()).all()
+    # movies = Movie.query.join(Recommendation).filter(
+    #    Recommendation.user_id == user_id).order_by(
+    #    Recommendation.created.desc(), Recommendation.predicted.desc()).all()
+    user_ratings = Rating.query.with_entities(
+        Rating.movie_id).filter_by(user_id=user_id).as_scalar()
+    movies = Movie.query.filter(
+        ~Movie.id.in_(user_ratings)).limit(5).all()
     ifempty = 'No recommendations for you yet! '\
               'Rate some movies to get started.'
     return render_template(
