@@ -100,10 +100,8 @@ def unfav_movie(movie_id):
     return 'Success!', 200
 
 
-@frontend.route('/movies/favorites/<int:limit>')
-@authenticate
-def fav_movies(limit):
-    user_id = session['userId']
+@frontend.route('/user/<int:user_id>/favorites/<int:limit>')
+def fav_movies(user_id, limit):
     movies = Movie.query.join(Favorite).filter(
         Favorite.user_id == user_id).order_by(Favorite.created.desc()).all()
     return render_template(
@@ -138,6 +136,14 @@ def rate_movie(movie_id, value):
 def profile():
     user_id = session['userId']
     user = User.query.filter_by(id=user_id).first()
+    return render_template('frontend_profile.html', user=user)
+
+
+@frontend.route('/profile/<int:user_id>')
+def user_profile(user_id):
+    user = User.query.filter_by(id=user_id).first()
+    if user is None:
+        return 'User not found.', 404
     return render_template('frontend_profile.html', user=user)
 
 
