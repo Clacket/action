@@ -1,17 +1,6 @@
-import os
-
-from dotenv import load_dotenv
-
 import pytest
 
 import action
-
-
-@pytest.fixture(scope='session', autouse=True)
-def dotenv():
-    """Load dotenv file."""
-    load_dotenv(os.path.join(os.path.dirname(__file__), '../.env'))
-
 
 @pytest.fixture
 def app():
